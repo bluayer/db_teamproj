@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>로그인</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/libs/css/style.css" />
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css" />
+    <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- login page  -->
+    <!-- ============================================================== -->
+    <div class="splash-container">
+      <div class="card ">
+        <div class="card-header text-center">
+          <a href="../index.html"><img class="logo-img" alt=""/></a>
+          <span class="splash-description">아이디와 비밀번호를 입력해주세요.</span>
+        </div>
+        <div class="card-body">
+          <form action="/signin" method="POST">
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="username"
+                name="name"
+                type="text"
+                placeholder="Username"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="password"
+                name="pass"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div class="form-group">
+              <label class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" /><span
+                  class="custom-control-label"
+                  >기억하기</span
+                >
+              </label>
+            </div>
+            <% if (typeof(referer) != 'undefined') {%>
+            <input type="hidden" name="referer" value="<%= referer %>" />
+            <% } %>
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="로그인" />
+          </form>
+        </div>
+        <div class="card-footer bg-white p-0  ">
+          <div class="card-header text-center " align="center">
+            <a href="/signup" class="footer-link">계정 생성</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- end login page  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+  </body>
+</html>
