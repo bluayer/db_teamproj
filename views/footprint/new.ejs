@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partial/head.ejs %>
+    <script type="text/javascript">
+      var count = 0;
+      function addForm() {
+        var addedFormDiv = document.getElementById('addedFormDiv');
+        var str = '';
+        str += '<br>제목 ' + count + " <input type='text' class='form-control' name='tb1_" + count + "'>";
+        str += '<br>URL ' + count + " <input type='text' class='form-control' name='tb2_" + count + "'>";
+        str += '<br>내용 ' + count + " <input type='text' class='form-control' name='tb3_" + count + "'><BR>";
+        // 추가할 폼(에 들어갈 HTML)
+        var addedDiv = document.createElement('div'); // 폼 생성
+        addedDiv.id = 'added_' + count; // 폼 Div에 ID 부여 (삭제를 위해)
+        addedDiv.innerHTML = str; // 폼 Div안에 HTML삽입
+        addedFormDiv.appendChild(addedDiv); // 삽입할 DIV에 생성한 폼 삽입
+        count++;
+        document.baseForm.count.value = count;
+        // 다음 페이지에 몇개의 폼을 넘기는지 전달하기 위해 히든 폼에 카운트 저장
+      }
+
+      function delForm() {
+        var addedFormDiv = document.getElementById('addedFormDiv');
+        if (count > 1) {
+          // 현재 폼이 두개 이상이면
+          var addedDiv = document.getElementById('added_' + --count);
+          // 마지막으로 생성된 폼의 ID를 통해 Div객체를 가져옴
+          addedFormDiv.removeChild(addedDiv); // 폼 삭제
+        } else {
+          // 마지막 폼만 남아있다면
+          document.baseForm.reset(); // 폼 내용 삭제
+        }
+      }
+    </script>
+  </head>
+
+  <body onload="addForm();">
+    <% include ../partial/header.ejs %>
+    <br>
+    <br>
+    <br>
+
+    <div class="splash-container">
+      <form name="baseForm" action="" method="post">
+        <input type="hidden" name="count" value="0" />
+
+        <div id="addedFormDiv"></div>
+        <br />
+        <!-- 폼을 삽입할 DIV -->
+        <button type="button" class="btn btn-primary"onclick="addForm()">추가</button>
+        <button type="button" class="btn btn-danger"onclick="delForm()">삭제</button>
+        <button type="submit" class="btn btn-success" >등록하기</button>
+
+      </form>
+    </div>
+  </body>
+</html>

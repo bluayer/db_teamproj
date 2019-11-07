@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partial/head.ejs %>
+  <!-- <link rel="stylesheet" type="text/css" href="/css/post_index.css"> -->
+  <style>
+    .search {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+
+</head>
+
+<body>
+    <% include ../partial/header.ejs %>
+    <div class="container post post-index">
+      
+      <h3>Project Board</h3>
+      <h5>진행하고 싶은 혹은 진행할 프로젝트에 관한 설명을 써주세요!</h5>
+      <br>
+      <hr>
+      <br>
+      <label>검색</label>
+      <div class="container">
+        <form action="/posts/search" method="get" id="searchAction" name="searchAction">
+          <div class="form-group row">
+            <select name="searchCategory" form="searchAction">
+              <option value="" disabled selected>Search option</option>
+              <option value="author">작성자</option>
+              <option value="titleBody">제목+내용</option>
+            </select>
+
+            <div class="col">
+              <input type="text" class="form-control search_word" id="searchWord" name="searchWord" placeholder="검색어를 입력하세요">
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary" onclick="searchContent();">검색</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    <br>
+      <hr>
+      <br>
+        <div class="buttons">
+          <!-- <% //if(isAuthenticated){ %>
+            <a class="btn-floating btn-large cyan pulse" href="/posts/new"><i class="material-icons" id="scrollBtn">edit</i></a>
+            <% //} %> -->
+        </div>
+
+        <!-- <% //if(posts == null || posts.length == 0){ %> -->
+          <tr>
+            <!-- <td class="noData" colspan=100> There is no data to show :( </td> -->
+            <button type="button" onClick="location.href='/'" class="btn btn-primary" onclick="searchContent();">새 스터디</button>
+            <br>
+            <center>
+            <!-- <img src="/img/peace.jpg" width="350vw" height="350vh"> -->
+     
+            <br>
+            <!-- <h3>inner peace...</h3> -->
+          </center>
+          </tr>
+          <!-- <% //} %> -->
+            <!-- <div class="row ">
+              <% // posts.forEach(function(post) { %>
+                <div class="col s12 m6">
+                  <div class="card white">
+                    <div class="card-content">
+                      <span class="card-title"><a href="/posts/<%= //post._id %>"><%= //post.title %></a></span>
+                      <p>
+                        <%= //post.body.length > 30 ? //post.body.substring(0, 30) + "..." : //post.body %>
+                      </p>
+                    </div>
+                    <div class="card-action">
+                      <a href="/posts/<%= //post._id %>">
+                        <%= //post.author ? post.author.username : "" %>
+                      </a>
+                      <a>
+                        <%= //post.createdDate %>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <% //}) %>
+            </div> -->
+
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </div>
+            </div>
+
+            <script>
+              function searchContent() {
+                if ($('#searchWord').val == '') {
+                  alert("검색어를 입력해주세요!!!");
+                } else {
+                  $('#searchAction').submit();
+                }
+              }
+            </script>
+
+            <script>
+              $(document).ready(function() {
+                $('select').formSelect();
+              });
+            </script>
+
+
+    </div>
+    <!-- container end -->
+</body>
+
+</html>
