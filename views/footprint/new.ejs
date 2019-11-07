@@ -8,9 +8,14 @@
       function addForm() {
         var addedFormDiv = document.getElementById('addedFormDiv');
         var str = '';
+        str += "<div class='container'>";
+        str += "<div class='card' style='width: 70%;'>"
+        str += "<div class='card-body'>"
+        str += '발자취 ' + count + '<br>'
         str += '<br>제목 ' + count + " <input type='text' class='form-control' name='tb1_" + count + "'>";
         str += '<br>URL ' + count + " <input type='text' class='form-control' name='tb2_" + count + "'>";
         str += '<br>내용 ' + count + " <input type='text' class='form-control' name='tb3_" + count + "'><BR>";
+        str += '</div></div></div><br>'
         // 추가할 폼(에 들어갈 HTML)
         var addedDiv = document.createElement('div'); // 폼 생성
         addedDiv.id = 'added_' + count; // 폼 Div에 ID 부여 (삭제를 위해)
@@ -34,6 +39,23 @@
         }
       }
     </script>
+    <style>
+      .card {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .btnGroup {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content:center;
+      }
+      .btn {
+        margin: 0.3rem;
+      }
+    </style>
   </head>
 
   <body onload="addForm();">
@@ -41,19 +63,29 @@
     <br>
     <br>
     <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+      <div class="card" style="width: 70%;">
+        <div class="card-body">
+          <h5 class="card-title">커리큘럼 등록하기</h5>
+          <hr>
+          <br>
+          <form name="baseForm" action="" method="post">
+            <input type="hidden" name="count" value="0" />
 
-    <div class="splash-container">
-      <form name="baseForm" action="" method="post">
-        <input type="hidden" name="count" value="0" />
-
-        <div id="addedFormDiv"></div>
-        <br />
-        <!-- 폼을 삽입할 DIV -->
-        <button type="button" class="btn btn-primary"onclick="addForm()">추가</button>
-        <button type="button" class="btn btn-danger"onclick="delForm()">삭제</button>
-        <button type="submit" class="btn btn-success" >등록하기</button>
-
-      </form>
+            <div id="addedFormDiv"></div>
+            <br />
+            <!-- 폼을 삽입할 DIV -->
+            <div class="btnGroup">
+              <button type="button" class="btn btn-primary"onclick="addForm()">추가</button>
+              <button type="button" class="btn btn-danger"onclick="delForm()">삭제</button>
+              <button type="submit" class="btn btn-success" >등록하기</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>

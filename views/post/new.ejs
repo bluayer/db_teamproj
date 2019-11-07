@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partial/head.ejs %>
+  <style>
+    .card {
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <% include ../partial/header.ejs %>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <div class="card" style="width: 70%;">
+      <div class="card-body">
+        <h5 class="card-title">스터디 등록하기</h5>
+        <h6 class="card-subtitle mb-2 text-muted">스터디를 만들어주세요!</h6>
+        <hr>
+        <p class="card-text">스터디 이름</p>
+        <div class="form-group">
+            <input
+              class="form-control form-control-lg"
+              type="text"
+              name="title"
+              required=""
+              placeholder="스터디 이름을 입력해주세요"
+              autocomplete="off"
+            />
+          </div>
+
+          <p class="card-text">스터디 내용</p>
+          <div class="form-group">
+            <textarea
+              class="form-control form-control-lg"
+              type="content"
+              name="content"
+              required=""
+              placeholder="스터디 내용을 입력해주세요"
+              autocomplete="off"
+              rows="5"
+            ></textarea>
+          </div>
+
+          <p class="card-text">제한 인원</p>
+          <div class="form-group">
+            <input
+              class="form-control form-control-lg"
+              id="person_num"
+              name="person_num"
+              type="person_num"
+              required=""
+              placeholder="스터디 제한 인원을 입력해주세요"
+            />
+          </div>
+
+          <p class="card-text">스터디 지역</p>
+          <div class="form-group">
+            <select 
+              class="form-control" 
+              id="location"
+              name="location"
+            >
+              <option value="1">서울</option>
+              <option value="2">경기</option>
+              <option value="3">인천</option>
+              <option value="4">대구</option>
+              <option value="5">대전</option>
+              <option value="6">부산</option>
+              <option value="7">충북</option>
+              <option value="8">충남</option>
+              <option value="9">경북</option>
+              <option value="10">경남</option>
+              <option value="11">전북</option>
+              <option value="12">전남</option>
+              <option value="13">강원</option>
+              <option value="14">광주</option>
+            </select>
+          </div>
+
+          <p class="card-text">스터디장 연락처</p>
+          <div class="form-group">
+            <input
+              class="form-control form-control-lg"
+              required=""
+              type="email"
+              name="email"
+              placeholder="email을 입력해주세요"
+            />
+          </div>
+
+          <div class="form-group pt-2">
+            <input
+              type="submit"
+              id="signupBtn"
+              class="btn btn-block btn-primary"
+              value="스터디 등록하기"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
