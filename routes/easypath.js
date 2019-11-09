@@ -3,11 +3,15 @@ const router = express.Router();
 const Console = console;
 
 router.get('/', (req, res, next) => {
-  res.render('../views/post/index');
+  res.render('../views/easypath/index');
+});
+
+router.get('/show', (req, res, next) => {
+  res.render('../views/easypath/show');
 });
 
 router.get('/new', (req, res, next) => {
-  res.render('../views/post/new');
+  res.render('../views/easypath/new');
 });
 
 

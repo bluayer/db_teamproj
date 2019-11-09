@@ -44,8 +44,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set routes
 app.use('/', require('./routes/home'));
-app.use('/post', require('./routes/post'));
-app.use('/footprint', require('./routes/footprint'));
+app.use('/study', require('./routes/study'));
+app.use('/easypath', require('./routes/easypath'));
 app.use('/user', require('./routes/user'));
 
 app.listen(port, function () {

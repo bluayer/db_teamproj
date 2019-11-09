@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partial/head.ejs %>
+    <style>
+      .card {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .btn {
+        margin: 0.3rem;
+      }
+    </style>
+  </head>
+
+  <body onload="addForm();">
+    <% include ../partial/header.ejs %>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+      <div class="card" style="width: 70%;">
+        <div class="card-body">
+          <h5 class="card-title">발자아취이</h5>
+          <hr>
+          <br>
+          <p class="card-subtitle">작성자 : joys</p>
+          <br>
+          <p class="card-subtitle">작성일자: 2019.11.09</p>
+          <br>
+          <hr>
+          <p class="card-subtitle">Easypath 내용 :</p>
+          <p class="card-text">야 너도 디비 잘하고 싶어? 나두!!</p>
+          <div class="card" style="width: 70%;">
+            <div class="card-body">
+              <p class="card-subtitle">Easypath 0 : 노드에 디비 장착하기</p>
+              <p class="card-subtitle"><a href="https://opentutorials.org/course/3347/21185">URL 0: https://opentutorials.org/course/3347/21185</a></p>
+              <p class="card-subtitle">내용 0 : 이것은 노드로부터 비롯되어.... 쏼라릴아올쏼라라앙ㄹ울ㅇ루알물ㅇㄴ머라ㅣㅁㄴ어ㅣㄹ먼이ㅓ린ㅇ머린아멀</p>
+            </div>
+          </div>
+          <br>
+          <div class="card" style="width: 70%;">
+            <div class="card-body">
+              <p class="card-subtitle">Easypath 1 : 울라울라울라숑숑</p>
+              <p class="card-subtitle"><a href="https://opentutorials.org/course/3347/21186">URL 1: https://opentutorials.org/course/3347/21186</a></p>
+              <p class="card-subtitle">내용 0 : 짱구는 귀요미 탱구도 귀요미 탱구님 사랑해요 꺄아아아악</p>
+            </div>
+          </div>
+            <br>
+            <br />
+            <center>
+              <button type="button" onClick="location.href='/study/new'" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
+            </center>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
