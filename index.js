@@ -1,8 +1,30 @@
+const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+const databaseInfo = require('./database.json');
+
 const port = process.env.PORT || 3000;
+
+const connection = mysql.createConnection({
+  host : databaseInfo.host,
+  user : databaseInfo.user,
+  password : databaseInfo.password,
+  port: databaseInfo.port,
+  database : databaseInfo.database,
+});
+
+connection.connect(() => {
+  console.log('connect clear');
+});
+
+connection.query('SELECT * FROM TBL_EASYPATH_INFO', function (error, results, fields) {
+  if (error) {
+      console.log(error);
+  }
+  console.log(results);
+});
 
 // Set env values.
 require('dotenv').config();
