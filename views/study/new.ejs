@@ -10,8 +10,13 @@
       flex-direction: row;
       justify-content: center;
     }
-
   </style>
+  <script>
+    function enrollStudy() {
+      alert("스터디가 등록되었습니다.");
+      window.location = "/study"
+    }
+  </script>
 </head>
 
 <body>
@@ -104,6 +109,7 @@
               type="submit"
               id="signupBtn"
               class="btn btn-block btn-primary"
+              onClick="enrollStudy()"
               value="스터디 등록하기"
             />
           </div>
