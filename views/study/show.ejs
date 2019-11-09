@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../partial/head.ejs %>
+    <style>
+      .card {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .btn {
+        margin: 0.3rem;
+      }
+    </style>
+    <script>
+      const applyStudy = function() {
+        alert('스터디에 참가되었습니다!')
+        window.location = '/study';
+      }
+    </script>
+  </head>
+
+  <body onload="addForm();">
+    <% include ../partial/header.ejs %>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+      <div class="card" style="width: 70%;">
+        <div class="card-body">
+          <h5 class="card-title">재자구함</h5>
+          <hr>
+          <br>
+          <p class="card-subtitle">작성자 : wugus</p>
+          <br>
+          <p class="card-subtitle">작성일자: 2019.11.09</p>
+          <br>
+          <hr>
+          <br>
+          <p class="card-subtitle">스터디 내용 :</p>
+          <br>
+          <p class="card-text">야 너도 자구 잘하고 싶어? 나두!!</p>
+          <hr>
+          <br>
+          <p class="card-subtitle">현재 신청 인원 / 제한 인원 :</p>
+          <br>
+          <p class="card-text">2/5</p>
+          <hr>
+          <br>
+          <p class="card-subtitle">지역 :</p>
+          <br>
+          <p class="card-text">서울</p>
+          <hr>
+          <br>
+          <p class="card-subtitle">스터디장 이메일 :</p>
+          <br>
+          <p class="card-text">wogus@naver.com</p>
+          <hr>
+            <br>
+            <br />
+            <center>
+              <button type="button" onClick="applyStudy()" class="btn btn-primary">이 스터디 신청하기</button>
+            </center>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

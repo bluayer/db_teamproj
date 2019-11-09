@@ -15,16 +15,20 @@ const connection = mysql.createConnection({
   database : databaseInfo.database,
 });
 
-connection.connect(() => {
-  console.log('connect clear');
+connection.connect((err) => {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
 });
 
-connection.query('SELECT * FROM TBL_EASYPATH_INFO', function (error, results, fields) {
-  if (error) {
-      console.log(error);
-  }
-  console.log(results);
-});
+// connection.query('SELECT * FROM TBL_EASYPATH_INFO', function (error, results, fields) {
+//   if (error) {
+//       console.log(error);
+//   }
+//   console.log(results);
+// });
 
 // Set env values.
 require('dotenv').config();
@@ -40,8 +44,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set routes
 app.use('/', require('./routes/home'));
-app.use('/post', require('./routes/post'));
-app.use('/footprint', require('./routes/footprint'));
+app.use('/study', require('./routes/study'));
+app.use('/easypath', require('./routes/easypath'));
 app.use('/user', require('./routes/user'));
 
 app.listen(port, function () {
