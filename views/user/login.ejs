@@ -39,7 +39,7 @@
           <span class="splash-description">아이디와 비밀번호를 입력해주세요.</span>
         </div>
         <div class="card-body">
-          <form action="/signin" method="POST">
+          <form action="/user/login" method="POST">
             <div class="form-group">
               <input
                 class="form-control form-control-lg"
@@ -54,7 +54,7 @@
               <input
                 class="form-control form-control-lg"
                 id="password"
-                name="pass"
+                name="password"
                 type="password"
                 placeholder="Password"
               />
@@ -75,7 +75,7 @@
         </div>
         <div class="card-footer bg-white p-0  ">
           <div class="card-header text-center " align="center">
-            <a href="/signup" class="footer-link">계정 생성</a>
+            <a href="/user/signup" class="footer-link">계정 생성</a>
             <br />
             <hr />
             <a href="/" class="footer-link">메인으로 이동</a>

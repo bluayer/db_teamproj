@@ -22,41 +22,37 @@
           >스터디 찾기</a
         >
       </li>
-      <!--
+      <% if(!session.loggedin) { %>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          href="../mypage"
-          role="button"
-          aria-haspopup="true"
-          aria-expanded="false"
-          >Mypage</a
-        >
-      </li>
-    -->
-      
-      <li class="nav-item">
-        <a class="nav-link" href="/signup" role="button" aria-haspopup="true" aria-expanded="false"
+        <a class="nav-link" href="/user/signup" role="button" aria-haspopup="true" aria-expanded="false"
           >계정 생성
         </a>
       </li>
-
+      
       <li class="nav-item">
-        <a class="nav-link" href="/login" role="button" aria-haspopup="true" aria-expanded="false"
+        <a class="nav-link" href="/user/login" role="button" aria-haspopup="true" aria-expanded="false"
           >로그인
         </a>
       </li>
 
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          href="/user/changeinfo"
-          role="button"
-          aria-haspopup="true"
-          aria-expanded="false"
-          >정보변경
-        </a>
-      </li>
+      <% } else { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/logout" role="button" aria-haspopup="true" aria-expanded="false"
+            >로그아웃
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/user/changeinfo"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >정보변경
+          </a>
+        </li>
+      <% } %>
     </ul>
   </div>
 </nav>

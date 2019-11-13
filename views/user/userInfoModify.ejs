@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <title>User Info modify</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css" />
     <link href="../assets/vendor/fonts/circular-std/style.css" rel="stylesheet" />
@@ -13,6 +13,7 @@
       rel="stylesheet"
       href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css"
     />
+    <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <style>
       html,
       body {
@@ -37,71 +38,90 @@
     <!-- ============================================================== -->
     <!-- signup form  -->
     <!-- ============================================================== -->
-    <form class="splash-container">
-      <div class="card">
+      <div class="card splash-container">
         <div class="card-header">
           <h3 class="mb-1" align="center">유저 정보 변경</h3>
         </div>
         <div class="card-body">
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              type="text"
-              name="nick"
-              required=""
-              placeholder="Username"
-              autocomplete="off"
-            />
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              type="email"
-              name="email"
-              required=""
-              placeholder="변경할 이메일을 입력해주세요"
-              autocomplete="off"
-            />
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              id="pass1"
-              type="password"
-              required=""
-              placeholder="변경할 비밀번호를 입력해주세요"
-            />
-          </div>
-          <div class="form-group">
-            <input class="form-control form-control-lg" required="" placeholder="비밀번호 확인" />
-          </div>
+          Username : <%= session.username %>
+          <br>
+          <br>
+          <form action="/user/changeinfo/email" method="POST" class="splash-container">
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                type="email"
+                name="email"
+                required=""
+                placeholder="변경할 이메일을 입력해주세요"
+                autocomplete="off"
+              />
+            </div>
 
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              required=""
-              placeholder="변경할 비밀번호를 입력해주세요"
-            />
-          </div>
+            <div class="form-group pt-2">
+              <button class="btn btn-block btn-primary" type="submit">이메일 변경</button>
+            </div>
+          </form>
+          <br>
+          <hr>
+          <br>
+          
+          <form action="/user/changeinfo/pw" method="POST" class="splash-container">
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="pass1"
+                type="password"
+                name="cur_password"
+                required=""
+                placeholder="현재 비밀번호를 입력해주세요"
+              />
+            </div>
 
-          <div class="form-group pt-2">
-            <button class="btn btn-block btn-primary" type="submit">정보변경</button>
-          </div>
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="pass2"
+                type="password"
+                name="password"
+                required=""
+                placeholder="변경할 비밀번호를 입력해주세요"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="pass3"
+                name="password2"
+                type="password"
+                required=""
+                placeholder="변경할 비밀번호를 입력해주세요"
+              />
+            </div>
+
+            <div class="form-group pt-2">
+              <button class="btn btn-block btn-primary" id="Btn" type="submit">비밀번호 변경</button>
+            </div>
+          </form>
         </div>
         <div class="card-footer bg-white">
           <p>내용을 저장하지 않고 끝내고 싶으시다면?</p>
           <a href="/" class="text-secondary">메인 이동</a>
           <a> | </a>
-          <a href="#" onClick="deleteUser()" class="text-secondary">탈퇴하기</a>
+          <a href="/user/getout" class="text-secondary">탈퇴하기</a>
         </div>
       </div>
-    </form>
-
+    
     <script>
-      function deleteUser () {
-        alert('탈퇴되었습니다!')
-        window.location = '/';
-      }
+      $('#Btn').click(e => {
+        if ($('#pass2').val() !== $('#pass3').val()) {
+          alert('비밀번호를 확인해 주세요.');
+        } else {
+          $('#Btn').submit();
+        }
+      });
+
     </script> 
   </body>
 </html>

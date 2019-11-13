@@ -3,15 +3,14 @@ const router = express.Router();
 const Console = console;
 
 router.get('/', (req, res, next) => {
-  res.render('../views/index');
-});
-
-router.get('/login', (req, res, next) => {
-  res.render('../views/user/login');
-});
-
-router.get('/signup', (req, res, next) => {
-  res.render('../views/user/signup');
+  const { session } = req;
+  if (session.loggedin) {
+    Console.log('Login : ' + JSON.stringify(session));
+    res.render('../views/index', { session });
+  } else {
+    Console.log('No login : ' + JSON.stringify(session));
+    res.render('../views/index', { session });
+  }
 });
 
 module.exports = router;

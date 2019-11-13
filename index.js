@@ -1,19 +1,19 @@
-const mysql = require('mysql');
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const mongoStore = require('connect-mongo')(session);
+
 const app = express();
 
 const databaseInfo = require('./database.json');
 
 const port = process.env.PORT || 3000;
 
-const connection = mysql.createConnection({
-  host : databaseInfo.host,
-  user : databaseInfo.user,
-  password : databaseInfo.password,
-  port: databaseInfo.port,
-  database : databaseInfo.database,
-});
+// Set env values.
+require('dotenv').config();
+
+const connection = require('./routes/db');
 
 connection.connect((err) => {
   if (err) {
@@ -23,16 +23,6 @@ connection.connect((err) => {
   console.log('connected as id ' + connection.threadId);
 });
 
-// connection.query('SELECT * FROM TBL_EASYPATH_INFO', function (error, results, fields) {
-//   if (error) {
-//       console.log(error);
-//   }
-//   console.log(results);
-// });
-
-// Set env values.
-require('dotenv').config();
-
 app.set('view engine', 'ejs');
 
 // Set for static file
@@ -41,6 +31,23 @@ app.use(express.static(`${__dirname}/public`));
 // Set bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Set session with MongoDB
+app.use(session({
+  store: new mongoStore({
+    url: `mongodb://${databaseInfo.mongo.dbuser}:${databaseInfo.mongo.dbpassword}@ds041228.mlab.com:41228/team_session`,
+    collection: "sessions",
+    clear_interval: 60 * 30
+  }),
+  key: 'sid',
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 30// 1000ms -> 1s, so 30 min is session live time
+  }
+}));
 
 // Set routes
 app.use('/', require('./routes/home'));
