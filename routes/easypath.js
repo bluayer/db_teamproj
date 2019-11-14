@@ -18,6 +18,10 @@ router.get('/new', (req, res, next) => {
   res.render('../views/easypath/new', { session });
 });
 
+router.post('/create', (req, res, next) => {
+  console.log(req.body);
+});
+
 router.get('/posts/search', (req, res, next) => {
   var searchWord = req.param('searchWord');
   var searchCategory = req.param('searchCategory');
@@ -57,7 +61,7 @@ router.get('/posts/search', (req, res, next) => {
     }
   })
 
-  
+
 }) 
 
 
