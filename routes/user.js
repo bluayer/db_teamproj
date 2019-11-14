@@ -5,7 +5,21 @@ const Console = console;
 
 router.get('/changeinfo', (req, res, next) => {
   const { session } = req;
-  res.render('../views/user/userInfoModify.ejs', { session });
+  const sql = `SELECT email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id= ?)`
+  const requirements = [session.user_id];
+
+  connection.query(sql, requirements, (error, results) => {
+    if (error) {
+      CConsole.log('error is' + error);
+      res.write("<script language=\"javascript\">alert('Error!!!')</script>");
+      res.write("<script language=\"javascript\">window.location=\"/user/changeinfo\"</script>");
+      res.end();
+    } else {
+      const email = results[0].email;
+      res.render('../views/user/userInfoModify.ejs', { session, email });
+    }
+  })
+  
 });
 
 router.post('/changeinfo/email', (req, res, next) => {
