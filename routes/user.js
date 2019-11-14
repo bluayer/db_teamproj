@@ -63,7 +63,7 @@ router.get('/login', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   const { name, password } = req.body;
-  const sql = `SELECT user_id FROM REALLY_FINAL_DB.TBL_USER_INFO where UserName=? and Password=?;`
+  const sql = `SELECT * FROM REALLY_FINAL_DB.TBL_USER_INFO where UserName=? and Password=?;`
   const requirements = [name, password];
   if(name && password) {
     connection.query(sql, requirements, (error, results, fields) => {
@@ -71,12 +71,16 @@ router.post('/login', (req, res, next) => {
         res.write("<script language=\"javascript\">alert('There's problem in query, try again please')</script>");
         res.write("<script language=\"javascript\">window.location=\"/user/login\"</script>");
         res.end();
-      } else {
+      } else if(results.length > 0) {
         console.log('Querry success!' + JSON.stringify(results));
         req.session.loggedin = true;
         req.session.username = name;
         req.session.user_id = results[0].user_id;
         res.redirect('/');
+      } else {
+        res.write("<script language=\"javascript\">alert('Wrong input')</script>");
+        res.write("<script language=\"javascript\">window.location=\"/user/login\"</script>");
+        res.end();
       }
     })
   }
@@ -97,10 +101,14 @@ router.post('/signup', async (req, res, next) => {
         res.write("<script language=\"javascript\">alert('There's problem in query, try again please')</script>");
         res.write("<script language=\"javascript\">window.location=\"/user/signup\"</script>");
         res.end();
-      } else {
+      } else if (results.length > 0){
         console.log('Querry success!' + results);
         res.write("<script language=\"javascript\">alert('Make your account successfully')</script>");
         res.write("<script language=\"javascript\">window.location=\"/user/login\"</script>");
+        res.end();
+      } else {
+        res.write("<script language=\"javascript\">alert('Wrong input')</script>");
+        res.write("<script language=\"javascript\">window.location=\"/user/signup\"</script>");
         res.end();
       }
 		});
