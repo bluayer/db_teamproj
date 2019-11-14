@@ -17,4 +17,14 @@ router.get('/new', (req, res, next) => {
   res.render('../views/easypath/new', { session });
 });
 
+router.get('/posts/search', (req, res, next) => {
+  console.log("hello")
+  const { searchCategory, searchWord } = req.body;
+  const sql = `SELECT * FROM REALLY_FINAL_DB.TBL_EASYPATH_INFO WHERE user_id = (SELECT user_id FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE username = ?);`;
+  const requirements = [searchWord];
+
+  console.log(sql)
+}) 
+
+
 module.exports = router;
