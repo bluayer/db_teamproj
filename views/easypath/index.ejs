@@ -44,58 +44,20 @@
     <br>
       <hr>
       <br>
-        <div class="buttons">
-          <!-- <% //if(isAuthenticated){ %>
-            <a class="btn-floating btn-large cyan pulse" href="/posts/new"><i class="material-icons" id="scrollBtn">edit</i></a>
-            <% //} %> -->
-        </div>
-
-        <!-- <% //if(posts == null || posts.length == 0){ %> -->
-          <tr>
-            <!-- <td class="noData" colspan=100> There is no data to show :( </td> -->
-            <button type="button" onClick="location.href='/easypath/new'" class="btn btn-primary">새 발자취 등록</button>
-            <br>
-            <center>
-            <!-- <img src="/img/peace.jpg" width="350vw" height="350vh"> -->
-     
-            <br>
-            <!-- <h3>inner peace...</h3> -->
-          </center>
-          </tr>
-          <!-- <% //} %> -->
-            <!-- <div class="row ">
-              <% // posts.forEach(function(post) { %>
-                <div class="col s12 m6">
-                  <div class="card white">
-                    <div class="card-content">
-                      <span class="card-title"><a href="/posts/<%= //post._id %>"><%= //post.title %></a></span>
-                      <p>
-                        <%= //post.body.length > 30 ? //post.body.substring(0, 30) + "..." : //post.body %>
-                      </p>
-                    </div>
-                    <div class="card-action">
-                      <a href="/posts/<%= //post._id %>">
-                        <%= //post.author ? post.author.username : "" %>
-                      </a>
-                      <a>
-                        <%= //post.createdDate %>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <% //}) %>
-            </div> -->
-
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title"><a href="/easypath/show">발자아취이</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">이거슨 3학년에게 필요한 디비</h6>
-                <p class="card-text">야 너도 디비 잘하고 싶어? 나두!!</p>
-                <a href="/easypath/show" class="card-link">Easypath 확인하기</a>
-                <a href="#" class="card-link">아 모름 직다 태그</a>
-              </div>
+      <div class="row">
+        <% easypath.forEach(function(e) { %>
+          <div class="card" style="width: 18rem; margin: 2rem;">
+            <div class="card-body">
+              <h5 class="card-title"><%= e.easypath_id %> </h5>
+              <h6 class="card-subtitle mb-2 text-muted"><%= e.easypath_title %></h6>
+              <p class="card-text"><%= e.easypath_content %></p>
+              <a href="/easypath/show/<%= e.easypath_id %>" class="card-link">이지패스를 보자</a>
+              <br>
+              <a class="card-link"><%= e.created_time %></a>
             </div>
+          </div>
+        <% }) %>
+      </div>
 
             <script>
               function searchContent() {
