@@ -34,33 +34,33 @@
     <div class="container">
       <div class="card" style="width: 70%;">
         <div class="card-body">
-          <h5 class="card-title">재자구함</h5>
+          <h5 class="card-title"><%= study.study_title %> </h5>
           <hr>
           <br>
-          <p class="card-subtitle">작성자 : wugus</p>
+          <p class="card-subtitle">작성자 : <%= writer.username %></p>
           <br>
-          <p class="card-subtitle">작성일자: 2019.11.09</p>
+          <p class="card-subtitle">작성일자: <%= study.created_time %></p>
           <br>
           <hr>
           <br>
           <p class="card-subtitle">스터디 내용 :</p>
           <br>
-          <p class="card-text">야 너도 자구 잘하고 싶어? 나두!!</p>
+          <p class="card-text"><%= study.study_content %></p>
           <hr>
           <br>
           <p class="card-subtitle">현재 신청 인원 / 제한 인원 :</p>
           <br>
-          <p class="card-text">2/5</p>
+          <p class="card-text"><%= study.cur_num_people %> / <%= study.max_num_people %></p>
           <hr>
           <br>
           <p class="card-subtitle">지역 :</p>
           <br>
-          <p class="card-text">서울</p>
+          <p class="card-text"><%= study.study_location %> </p>
           <hr>
           <br>
           <p class="card-subtitle">스터디장 이메일 :</p>
           <br>
-          <p class="card-text">wogus@naver.com</p>
+          <p class="card-text"><%= writer.email %></p>
           <hr>
             <br>
             <br />

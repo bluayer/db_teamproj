@@ -19,7 +19,30 @@ router.get('/show/:id', (req, res, next) => {
   const { session } = req;
   const { id } = req.params;
   console.log(id); // it's study_id
-  res.render('../views/study/show', { session });
+  const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
+  const requirements_study = [id];
+  const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
+  
+  connection.query(sql_study, requirements_study, (error, results, fields) => {
+    // console.log("about study" + results);
+    const study = results[0];
+    const requirements_user = [study.user_id];
+    if (error) {
+      // error handling plz
+    } else {
+      
+      connection.query(sql_user, requirements_user, (error, results2, fields) => {
+        if (error) {
+          // error handling plz
+        } else {
+          // console.log("about user" + results2);
+          const writer = results2[0];
+          res.render('../views/study/show', { session , study, writer });
+        }
+      })
+    }
+  })
+  
 });
 
 router.get('/new', (req, res, next) => {
