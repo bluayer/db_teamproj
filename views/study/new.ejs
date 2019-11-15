@@ -11,12 +11,19 @@
       justify-content: center;
     }
   </style>
+
+  <!--버튼을 클릭하면 enrollStudy()함수를 실행함 그리고 그 내용은 submit을 하는거임-->
+  <!--submit은 아마 입력된 데이터를 post나 get형식으로 데이터 보내주는 역할인듯-->
+  <!--createAction인이유는 그 아래를 보면 알겠지만 id가 createAction이어서 그럼
+  form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction"
+  -->
   <script>
     function enrollStudy() {
-      alert("스터디가 등록되었습니다.");
-      window.location = "/study"
+      $('#createAction').submit();
     }
   </script>
+
+
 </head>
 
 <body>
@@ -32,87 +39,110 @@
         <h5 class="card-title">스터디 등록하기</h5>
         <h6 class="card-subtitle mb-2 text-muted">스터디를 만들어주세요!</h6>
         <hr>
-        <p class="card-text">스터디 이름</p>
-        <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              type="text"
-              name="title"
-              required=""
-              placeholder="스터디 이름을 입력해주세요"
-              autocomplete="off"
-            />
-          </div>
 
-          <p class="card-text">스터디 내용</p>
+        <!--form 어쩌구를쓰면 get이나 post방식으로 데이터를보내겠다는거임 action="/study/create"이면
+          /study/create링크로 데이터를 보내겟다는거고 그러면 우리는 study.js에서 
+          router.post('/create) 이런식으로 처리를 하면된다.-->
+        <form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction">
+          <p class="card-text">스터디 이름</p>
           <div class="form-group">
-            <textarea
-              class="form-control form-control-lg"
-              type="content"
-              name="content"
-              required=""
-              placeholder="스터디 내용을 입력해주세요"
-              autocomplete="off"
-              rows="5"
-            ></textarea>
-          </div>
+              <input
+                class="form-control form-control-lg"
+                type="text"
+                name="title"
+                required=""
+                placeholder="스터디 이름을 입력해주세요"
+                autocomplete="off"
+              />
+            </div>
 
-          <p class="card-text">제한 인원</p>
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              id="person_num"
-              name="person_num"
-              type="person_num"
-              required=""
-              placeholder="스터디 제한 인원을 입력해주세요"
-            />
-          </div>
+            <p class="card-text">스터디 내용</p>
+            <div class="form-group">
+              <textarea
+                class="form-control form-control-lg"
+                type="content"
+                name="content"
+                required=""
+                placeholder="스터디 내용을 입력해주세요"
+                autocomplete="off"
+                rows="5"
+              ></textarea>
+            </div>
 
-          <p class="card-text">스터디 지역</p>
-          <div class="form-group">
-            <select 
-              class="form-control" 
-              id="location"
-              name="location"
-            >
-              <option value="1">서울</option>
-              <option value="2">경기</option>
-              <option value="3">인천</option>
-              <option value="4">대구</option>
-              <option value="5">대전</option>
-              <option value="6">부산</option>
-              <option value="7">충북</option>
-              <option value="8">충남</option>
-              <option value="9">경북</option>
-              <option value="10">경남</option>
-              <option value="11">전북</option>
-              <option value="12">전남</option>
-              <option value="13">강원</option>
-              <option value="14">광주</option>
-            </select>
-          </div>
+            <p class="card-text">제한 인원</p>
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                id="person_num"
+                name="person_num"
+                type="person_num"
+                required=""
+                placeholder="스터디 제한 인원을 입력해주세요"
+              />
+            </div>
 
-          <p class="card-text">스터디장 연락처</p>
-          <div class="form-group">
-            <input
-              class="form-control form-control-lg"
-              required=""
-              type="email"
-              name="email"
-              placeholder="email을 입력해주세요"
-            />
-          </div>
+            <p class="card-text">스터디 지역</p>
+            <div class="form-group">
+              <select 
+                class="form-control" 
+                id="location"
+                name="location"
+              >
+                <option value="1">서울</option>
+                <option value="2">경기</option>
+                <option value="3">인천</option>
+                <!-- 14개 다처리하기 귀찮아서 3개만 함
+                <option value="4">대구</option>
+                <option value="5">대전</option>
+                <option value="6">부산</option>
+                <option value="7">충북</option>
+                <option value="8">충남</option>
+                <option value="9">경북</option>
+                <option value="10">경남</option>
+                <option value="11">전북</option>
+                <option value="12">전남</option>
+                <option value="13">강원</option>
+                <option value="14">광주</option>
+              -->
+              </select>
+            </div>
 
-          <div class="form-group pt-2">
-            <input
-              type="submit"
-              id="signupBtn"
-              class="btn btn-block btn-primary"
-              onClick="enrollStudy()"
-              value="스터디 등록하기"
-            />
-          </div>
+            <!--우선 기능구현 우선으로하기위해서 easypath_id를 입력받는걸로하였음-->
+            <!--차후에 시간이 남는다면 gui를 좀더 신경쓰면될듯-->
+            <p class="card-text">사용할 easypath 번호</p>
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                required=""
+                type="easypath_id"
+                name="easypath_id"
+                placeholder="easyapth 번호를 입력해주세요"
+              />
+            </div>
+
+            <!--email정보는 userinfo에서 가져올수있으니 삭제
+            <p class="card-text">스터디장 연락처</p>
+            <div class="form-group">
+              <input
+                class="form-control form-control-lg"
+                required=""
+                type="email"
+                name="email"
+                placeholder="email을 입력해주세요"
+              />
+            </div>
+            -->
+            <!--버튼을 클릭하면 enrollStudy()함수를 실행함 그 내용은 맨위에 보면있음-->
+            <div class="form-group pt-2">
+              <input
+                type="submit"
+                id="signupBtn"
+                class="btn btn-block btn-primary"
+                onClick="enrollStudy()" 
+                value="스터디 등록하기"
+              />
+            </div>
+        </form>
         </div>
       </div>
     </div>
