@@ -14,6 +14,12 @@ router.get('/', (req, res, next) => {
     }
   })
 });
+// 스터디 등록하기
+router.get('/new', (req, res, next) => {
+  const { session } = req;
+  console.log("등록하기 페이지")
+  res.render('../views/easypath/new', { session });
+});
 
 // 스터디 가입하기
 router.post('/apply', (req, res, next) => {
@@ -71,6 +77,7 @@ router.post('/new', (req, res, next) => {
 
 
 router.get('/posts/search', (req, res, next) => {
+  const { session } = req;
   var searchWord = req.param('searchWord');
   var searchCategory = req.param('searchCategory');
 
@@ -103,7 +110,7 @@ router.get('/posts/search', (req, res, next) => {
     } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
       console.log('\nStudy_query success');
       console.log(results);
-      res.redirect('/study')
+      res.render('../views/study/index', { session, study : results });
 
     }
   })
