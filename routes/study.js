@@ -5,11 +5,20 @@ const Console = console;
 
 router.get('/', (req, res, next) => {
   const { session } = req;
-  res.render('../views/study/index', { session });
+  const sql = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO`;
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      //error handling plz
+    } else {
+      res.render('../views/study/index', { session, study : results });
+    }
+  })
 });
 
-router.get('/show', (req, res, next) => {
+router.get('/show/:id', (req, res, next) => {
   const { session } = req;
+  const { id } = req.params;
+  console.log(id); // it's study_id
   res.render('../views/study/show', { session });
 });
 

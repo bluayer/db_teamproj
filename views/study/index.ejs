@@ -65,38 +65,19 @@
           </center>
           </tr>
           <!-- <% //} %> -->
-            <!-- <div class="row ">
-              <% // posts.forEach(function(post) { %>
-                <div class="col s12 m6">
-                  <div class="card white">
-                    <div class="card-content">
-                      <span class="card-title"><a href="/posts/<%= //post._id %>"><%= //post.title %></a></span>
-                      <p>
-                        <%= //post.body.length > 30 ? //post.body.substring(0, 30) + "..." : //post.body %>
-                      </p>
-                    </div>
-                    <div class="card-action">
-                      <a href="/posts/<%= //post._id %>">
-                        <%= //post.author ? post.author.username : "" %>
-                      </a>
-                      <a>
-                        <%= //post.createdDate %>
-                      </a>
-                    </div>
+            <div class="row ">
+              <% study.forEach(function(s) { %>
+                <div class="card" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= s.study_id %> </h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= s.study_title %></h6>
+                    <p class="card-text"><%= s.study_content %></p>
+                    <a href="/study/show/<%= s.study_id %>" class="card-link">스터디를 보자</a>
+                    <br>
+                    <a class="card-link"><%= s.created_time %></a>
                   </div>
                 </div>
-
-                <% //}) %>
-            </div> -->
-
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">재자구함</h5>
-                <h6 class="card-subtitle mb-2 text-muted">wogus의 재자구함</h6>
-                <p class="card-text">오반아~~~~~~~~~~~~~~~ 휘파람을 불어라~~~~~~~ 삐삐삐삐삐삐삐끼ㅣㅏ러ㅣ마ㅓㄴ인마ㅓ이ㅏㅓ</p>
-                <a href="/study/show" class="card-link">스터디를 보자</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
+              <% }) %>
             </div>
 
             <script>
