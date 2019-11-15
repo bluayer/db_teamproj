@@ -18,8 +18,42 @@ router.get('/', (req, res, next) => {
 router.get('/show/:id', (req, res, next) => {
   const { session } = req;
   const { id } = req.params;
-  console.log(id); // easypath_id
-  res.render('../views/easypath/show', { session });
+  console.log(id); 
+  const sql_easy = `SELECT * FROM REALLY_FINAL_DB.TBL_EASYPATH_INFO WHERE (easypath_id = ?)`
+  const requirements_easy = [id];
+  const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
+  const sql_specific = `SELECT * FROM REALLY_FINAL_DB.TBL_EASYPATH_SPECIFIC_INFO WHERE (easypath_id = ?) ORDER BY specific_num`
+  const requirements_specific = [id];
+
+  connection.query(sql_easy, requirements_easy, (error, results, fields) => {
+    // console.log("about study" + results);
+    const easypath = results[0];
+    const requirements_user = [easypath.user_id];
+    if (error) {
+      // error handling plz
+    } else {
+      
+      connection.query(sql_user, requirements_user, (error, results2, fields) => {
+        if (error) {
+          // error handling plz
+        } else {
+          const writer = results2[0];
+          
+          connection.query(sql_specific, requirements_specific, (error, results3, fields) => {
+            if (error) {
+              console.log(error);
+            }
+            const specific = results3;
+            // console.log("Specific is " + JSON.stringify(specific));
+            res.render('../views/easypath/show', { session , easypath, writer, specific: results3 });
+          })
+          // console.log("about user" + results2);
+          
+        }
+      })
+    }
+  })
+
 });
 
 router.get('/new', (req, res, next) => {
