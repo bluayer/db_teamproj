@@ -15,6 +15,23 @@ router.get('/', (req, res, next) => {
   })
 });
 
+// 스터디 가입하기
+router.post('/apply', (req, res, next) => {
+  const { user_id } = req.session;
+  const { study_id } = req.body;
+  console.log(study_id); // study_id
+  console.log(user_id); // user_id who wants applying to study.
+});
+
+// 스터디 탈퇴하기
+router.post('/getout', (req, res, next) => {
+  const { user_id } = req.session;
+  const { study_id } = req.body;
+  console.log(study_id); // study_id
+  console.log(user_id); // user_id who wants getting out of study.
+});
+
+
 router.get('/show/:id', (req, res, next) => {
   const { session } = req;
   const { id } = req.params;
