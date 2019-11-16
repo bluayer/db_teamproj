@@ -61,24 +61,42 @@ router.post('/create', (req, res, next) => {
   var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time)
 VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', 0, 0); `;
 
-  connection.query(sql,(error, results, fields) => {
+  var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id) 
+VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and max_num_people=${max_num_people} and study_location='${study_location}') 
+, ${user_id});`;
+
+  connection.query(sql,(error, results1, fields) => {
     if (error) {//에러가뜨면 이쪽을실행함
       Console.log('error is' + error);
       res.write("<script language=\"javascript\">alert('check easypath id again')</script>"); //alert는알림띄우는거
       res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
       res.end();
     } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
-      console.log('\nStudyCreate query success');
+      console.log('\nStudyCreate-1 query success');
       console.log(sql);
 
       //내가 redirect를 한이유는 http://localhost:3000/study/로 가기위해서임
       //그러면  http://localhost:3000/study/ 가 요청이됥태고
       //그러면 router.get('/', (req, res, next)가 실행이됨 이 기능이 수행되면  study목록을 다가져옴
       //그래서 새로추가한 study정보까지 다불러옴
-      res.redirect("./");
 
+    connection.query(sql2,(error, results2, fields) => {
+      if (error) {//에러가뜨면 이쪽을실행함
+        Console.log('error is' + error);
+        res.write("<script language=\"javascript\">alert('cant make same study')</script>"); //alert는알림띄우는거
+        res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+        res.end();
+      } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
+        console.log('\nStudyCreate-2 query success');
+        console.log(sql2);
+
+        res.redirect("./");
+
+      }
+    })
     }
   })
+
 
 });
 
