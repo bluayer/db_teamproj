@@ -87,11 +87,11 @@ VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_
 // 스터디 가입하기 --- 중복있을때 에러핸들링 필
 router.post('/apply', (req, res, next) => {
   const { user_id } = req.session;
-  const { study_id, max_num_people } = req.body;
+  const { study_id } = req.body;
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants applying to study.
 
-  var sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
+  const sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
   const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
   const sql=`INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO(study_id, user_id)SELECT i.study_id, u.user_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO as i, REALLY_FINAL_DB.TBL_USER_INFO as u
 WHERE i.study_id=${study_id} AND u.user_id=${user_id};`;
@@ -100,7 +100,8 @@ WHERE i.study_id=${study_id} AND u.user_id=${user_id};`;
 const requirement1=[study_id];
 const requirements=[user_id, study_id];
 if(user_id&& study_id){
-  if(sql_curNum>=sql_maxNum){
+  if(sql_curNum>=sql_maxNum){   //TODO
+    //console.log("OVER MAXIMUM");
       res.write("<script language=\"javascript\">alert('Number of people reached the maximum!')</script>");
       res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
       res.end();
@@ -159,7 +160,9 @@ router.post('/getout', (req, res, next) => {
   const { study_id } = req.body;
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants getting out of study.
-  const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO SET cur_num_people=cur_num_people-1 where study_id=${study_id};`;
+const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
+SET cur_num_people= (SELECT count(user_id) from REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO
+where study_id=${study_id});`
   const sql=`DELETE FROM REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO WHERE user_id=${user_id} AND study_id=${study_id};`;
   const requirements=[user_id,study_id];
   const requirement1=[study_id];
