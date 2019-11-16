@@ -58,7 +58,7 @@ router.post('/create', (req, res, next) => {
   console.log(study_location);
   */
 
-  var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time) 
+  var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time)
 VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', 0, 0); `;
 
   connection.query(sql,(error, results, fields) => {
@@ -72,24 +72,86 @@ VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_
       console.log(sql);
 
       //내가 redirect를 한이유는 http://localhost:3000/study/로 가기위해서임
-      //그러면  http://localhost:3000/study/ 가 요청이됥태고 
+      //그러면  http://localhost:3000/study/ 가 요청이됥태고
       //그러면 router.get('/', (req, res, next)가 실행이됨 이 기능이 수행되면  study목록을 다가져옴
       //그래서 새로추가한 study정보까지 다불러옴
       res.redirect("./");
 
     }
   })
-  
+
 });
 
 
 // 스터디 가입하기
+// 스터디 가입하기 --- 중복있을때 에러핸들링 필
 router.post('/apply', (req, res, next) => {
   const { user_id } = req.session;
-  const { study_id } = req.body;
+  const { study_id, max_num_people } = req.body;
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants applying to study.
+
+  var sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
+  const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
+  const sql=`INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO(study_id, user_id)SELECT i.study_id, u.user_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO as i, REALLY_FINAL_DB.TBL_USER_INFO as u
+WHERE i.study_id=${study_id} AND u.user_id=${user_id};`;
+
+
+const requirement1=[study_id];
+const requirements=[user_id, study_id];
+if(user_id&& study_id){
+  if(sql_curNum>=sql_maxNum){
+      res.write("<script language=\"javascript\">alert('Number of people reached the maximum!')</script>");
+      res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+      res.end();
+  }
+  else{  //현재 인원이 max 인원보다 작을때 추가
+    //console.log('ADD!!!');
+    connection.query(sql, requirements, (error,results)=>{ //스터디원 추가하기
+      if (error){ //에러 메세지
+      if(error.code=='ER_DUP_ENTRY'){
+          res.write("<script language=\"javascript\">alert('Already Exist!')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
+          res.end();
+        }
+        else{
+      Console.log('error is'+error);
+        res.write("<script language=\"javascript\">alert('Error!!!')</script>");
+        res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+        res.end();
+      }
+      }
+      //if(results.length>0){ //추가가 성공적
+      else{
+        console.log('Insert to study_participant_info Success'+JSON.stringify(results));
+        console.log(sql);
+      //res.write("<script language=\"javascript\">alert('Welcome! Join Successful!')</script>");
+      //res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+    //  res.end();
+        const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
+        SET cur_num_people=cur_num_people+1
+        where study_id=${study_id};`;
+        connection.query(sql_updateNum,requirement1,(error,results2)=>{  //현재인원수 업데이트
+          if (error){
+            Console.log('error is'+error);
+            res.write("<script language=\"javascript\">alert('Error!!!')</script>");
+            res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+            //res.redirect(`/study`);
+            res.end();
+          }
+          else{ //현재인원수 업데이트가 성공적일
+            console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
+          }
+        })
+      res.redirect('/')
+
+      }
+
+    })
+}
+}
 });
+
 
 // 스터디 탈퇴하기
 router.post('/getout', (req, res, next) => {
@@ -97,7 +159,38 @@ router.post('/getout', (req, res, next) => {
   const { study_id } = req.body;
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants getting out of study.
+  const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO SET cur_num_people=cur_num_people-1 where study_id=${study_id};`;
+  const sql=`DELETE FROM REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO WHERE user_id=${user_id} AND study_id=${study_id};`;
+  const requirements=[user_id,study_id];
+  const requirement1=[study_id];
+
+if(study_id&&user_id){
+  connection.query(sql, requirements,(error,results,fields)=>{
+    if (error){
+      Console.log('error is'+error);
+    }
+    else{
+      console.log('Getout of study Successful'+JSON.stringify(results));
+      console.log(sql);
+
+      connection.query(sql_updateNum,requirement1,(error,results2)=>{  //현재인원수 업데이트
+        if (error){
+          Console.log('error is'+error);
+          res.write("<script language=\"javascript\">alert('Error in updating!!!')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+          //res.redirect(`/study`);
+          res.end();
+        }
+        else{ //현재인원수 업데이트가 성공적일
+          console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
+        }
+      })
+      res.redirect('/');
+    }
+})
+}
 });
+
 
 
 router.get('/show/:id', (req, res, next) => {
@@ -107,7 +200,7 @@ router.get('/show/:id', (req, res, next) => {
   const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
   const requirements_study = [id];
   const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
-  
+
   connection.query(sql_study, requirements_study, (error, results, fields) => {
     // console.log("about study" + results);
     const study = results[0];
@@ -115,7 +208,7 @@ router.get('/show/:id', (req, res, next) => {
     if (error) {
       // error handling plz
     } else {
-      
+
       connection.query(sql_user, requirements_user, (error, results2, fields) => {
         if (error) {
           // error handling plz
@@ -127,7 +220,7 @@ router.get('/show/:id', (req, res, next) => {
       })
     }
   })
-  
+
 });
 
 router.post('/new', (req, res, next) => {
@@ -177,7 +270,7 @@ router.get('/posts/search', (req, res, next) => {
     }
   })
 
-  
-}) 
+
+})
 
 module.exports = router;
