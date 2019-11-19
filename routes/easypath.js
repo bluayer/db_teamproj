@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
     if (error) {
       //error handling plz
     } else {
-      console.log(results);
+      // console.log(results);
       //res.render는 여기에서 처리한 데이터를 다시 index.ejs로 보내준다는거
       //easypath : results는 뭐냐면
       //console.log(results)를 해보면알겟지만 쿼리를 날리고 그 결과가 results임
@@ -77,7 +77,69 @@ router.get('/new', (req, res, next) => {
 });
 
 router.post('/create', (req, res, next) => {
-  console.log(req.body);
+  const { title, content, category } = req.body;
+  let { cnt } = req.body;
+  const { user_id } = req.session
+  cnt -= 1;
+
+  const easypathSQL = `
+  INSERT INTO REALLY_FINAL_DB.TBL_EASYPATH_INFO
+  (user_id, easypath_title, specific_cnt, easypath_content, recommend_cnt, category, created_time, updated_time)
+  VALUES (${user_id}, '${title}', ${cnt}, '${content}', 0, '${category}', utc_timestamp(), utc_timestamp())
+  `;
+
+  connection.query(easypathSQL, (error, results, fields) => {
+    if (error) {
+      Console.log('error is' + error);
+      res.write("<script language=\"javascript\">alert('unknown input')</script>");
+      res.write("<script language=\"javascript\">window.location=\"/easypath\"</script>");
+      res.end();
+    } else {
+      console.log('\nEasypath register query success!');
+
+      connection.query(`SELECT LAST_INSERT_ID();`, (error, results, fields) => {
+        if (error) {
+          Console.log('error is' + error);
+          res.write("<script language=\"javascript\">alert('unknown input')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/easypath\"</script>");
+          res.end();
+        } else {
+          console.log('\nSuccessfully got the easypath query!!');
+          const easypath_id = results[0]["LAST_INSERT_ID()"];
+          
+          for (var i = 1; i <= cnt; i++) {
+            const specificTitle = req.body[('title' + i)];
+            const specificURL = req.body[('url' + i)];
+            const specificContent = req.body[('content' + i)];
+    
+            // console.log(easypath_id);
+            // console.log(i);
+            // console.log(specificTitle);
+            // console.log(specificURL);
+            // console.log(specificContent);
+
+            const specificSQL = `
+            INSERT INTO REALLY_FINAL_DB.TBL_EASYPATH_SPECIFIC_INFO
+            (easypath_id, specific_num, specific_title, specific_content, specific_url)
+            VALUES (${easypath_id}, ${i}, '${specificTitle}', '${specificContent}', '${specificURL}')`;
+  
+            connection.query(specificSQL, (error, results, fields) => {
+              if (error) {
+                Console.log('error is' + error);
+                res.write("<script language=\"javascript\">alert('unknown input')</script>");
+                res.write("<script language=\"javascript\">window.location=\"/easypath\"</script>");
+                res.end();
+              } else {
+                console.log('\nEasypath specific register query success!');
+                console.log(results);
+              }
+            })
+          }
+          res.redirect('/easypath')
+        }
+      })
+    }
+  })
 });
 
 
@@ -124,7 +186,6 @@ router.get('/posts/search', (req, res, next) => {
       res.end();
     } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
       console.log('\nStudy_query success');
-      console.log(results);
 
       //sql쿼리를 보내면 그 결과가 results에 들어오고 그거를 다시 index.ejs에다가 값을 return해주는거임
       //session은 로그인 관련부분이라 그냥 넣어주고 results를 easypath라는 이름으로 return해주는거
