@@ -136,7 +136,7 @@ connection.query(sql_compare, requirements_compare,(error,result1)=>{
       connection.query(sql, requirements, (error,results)=>{ //스터디원 추가하기
         if (error){ //에러 메세지
           if(error.code=='ER_DUP_ENTRY'){
-            res.write("<script language=\"javascript\">alert('Already Exist!')</script>");
+            res.write("<script language=\"javascript\">alert('You are already signed up for this study!')</script>");
             res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
             res.end();
           }
@@ -149,6 +149,9 @@ connection.query(sql_compare, requirements_compare,(error,result1)=>{
         }
         //if(results.length>0){ //추가가 성공적
         else{
+        //  res.write("<script language=\"javascript\">alert('추가되었습니//!')</script>");
+          //res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
+        //  res.end();
           console.log('Insert to study_participant_info Success'+JSON.stringify(results));
           console.log(sql);
           //res.write("<script language=\"javascript\">alert('Welcome! Join Successful!')</script>");
@@ -169,7 +172,9 @@ connection.query(sql_compare, requirements_compare,(error,result1)=>{
               console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
             }
           })
-          res.redirect('/')
+          res.write("<script language=\"javascript\">alert('Added successfully!')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+        //  res.redirect('/')
         }
       })
     }
@@ -219,7 +224,7 @@ if(study_id&&user_id){
           console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
         }
       })
-      res.redirect('/');
+      res.redirect('/study');
     }
 })
 }
