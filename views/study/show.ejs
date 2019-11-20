@@ -17,7 +17,7 @@
     </style>
     <script>
       const applyStudy = function() {
-        alert('스터디에 참가되었습니다!')
+        alert('스터디 등록 진행중')
         window.location = '/study';
       }
 
@@ -72,7 +72,7 @@
             <center>
               <!-- User가 로그인 했으면 -->
               <% if (session.loggedin) { %>
-                <form action="/study/apply" method="POST">
+                  <form action="/study/apply" method="POST">
                   <input type="hidden" name="study_id" value="<%= study.study_id %>" />
                   <button type="submit" onClick="applyStudy()" class="btn btn-primary">이 스터디 신청하기</button>
                 </form>
