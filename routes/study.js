@@ -14,15 +14,14 @@ router.get('/', (req, res, next) => {
     }
   })
 });
+
+
 // 스터디 등록하기
 router.get('/new', (req, res, next) => {
   const { session } = req;
   console.log("등록하기 페이지")
   res.render('../views/study/new', { session });
 });
-
-
-
 // 스터디 등록하기에서 값 입력하고 등록하기 버튼클릭햇을때 처리
 router.post('/create', (req, res, next) => {
   const { session } = req;
@@ -75,6 +74,7 @@ VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${us
       res.end();
     } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
       console.log('\nStudyCreate-1 query success');
+      console.log("are you fool??\n");
       console.log(sql);
 
       //내가 redirect를 한이유는 http://localhost:3000/study/로 가기위해서임
@@ -220,11 +220,10 @@ if(study_id&&user_id){
 });
 
 //스터디 수정하기
-
 router.post('/modify', (req, res, next) => {
   const { session } = req;
   const { study_id } = req.body;
-  console.log(req);
+  console.log(study_id);
   console.log("수정 페이지");
   console.log(req.body);
   const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
@@ -253,6 +252,59 @@ router.post('/modify', (req, res, next) => {
 
 
 });
+
+//스터디 수정하기 버튼 눌렀을 때
+router.post('/update', (req, res, next) => {
+  const { session } = req;
+  const { study_id } = req.body;
+  //console.log("What I want to see")
+  //console.log("////////////////////////")
+  //console.log(req.body);
+  //console.log(study_id);
+
+
+  var easypath_id = parseInt(req.param("easypath_id")); //지금 front에 easypath관련 등록부분이없어서 1로 상수정함
+  var study_title = req.param('title');
+  var study_content = req.param('content');
+  var max_num_people = parseInt(req.param('person_num')); //'1'이렇게 와서 이걸 정수형으로바꿈
+
+  var study_location = req.param('location');
+
+  if (study_location ==1)
+  {
+    study_location='서울';
+  }
+  else if (study_location ==2)
+  {
+    study_location='경기';
+  }
+  else if (study_location ==3)
+  {
+    study_location='인천';
+  }
+
+  var sql = `UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
+  SET easypath_id = ${easypath_id}, study_title = '${study_title}', study_content = '${study_content}', max_num_people = ${max_num_people}, study_location = '${study_location}' WHERE (study_id = ${study_id});`;
+
+
+/*  var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id)
+  VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and ///max_num_people=${max_num_people} and study_location='${study_location}')
+  , ${user_id});`;*/
+
+  connection.query(sql,(error, results1, fields) => {
+    if (error) {//에러가뜨면 이쪽을실행함
+      Console.log('error is')
+      Console.log(error);
+      res.write("<script language=\"javascript\">alert('check easypath id again')</script>"); //alert는알림띄우는거
+      res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+      res.end();
+    } else { //성공하면 이걸실행함 result에 쿼리결과가들어감
+      console.log('\nmodify query success');
+      console.log(sql);
+      res.redirect("./");
+      }
+    })
+  });
 
 router.get('/show/:id', (req, res, next) => {
   const { session } = req;

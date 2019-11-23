@@ -75,7 +75,7 @@
             <br />
             <center>
               <!-- User가 로그인 했으면 -->
-              <% if (session.loggedin) { %>
+              <% if (session.loggedin && session.user_id != study.user_id) { %>
                 <form action="/study/apply" method="POST">
                   <input type="hidden" name="study_id" value="<%= study.study_id %>" />
                   <button type="submit" onClick="applyStudy()" class="btn btn-primary">이 스터디 신청하기</button>

@@ -18,8 +18,8 @@
   form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction"
   -->
   <script>
-    function enrollStudy() {
-      $('#createAction').submit();
+    function modifyStudy() {
+      $('#modifyAction').submit();
     }
   </script>
 
@@ -43,7 +43,7 @@
         <!--form 어쩌구를쓰면 get이나 post방식으로 데이터를보내겠다는거임 action="/study/create"이면
           /study/create링크로 데이터를 보내겟다는거고 그러면 우리는 study.js에서
           router.post('/create) 이런식으로 처리를 하면된다.-->
-        <form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction">
+        <form name="baseForm" action="/study/update" method="post" id="modifyAction" name="modifyAction">
           <p class="card-text">스터디 이름</p>
           <div class="form-group">
               <textarea
@@ -112,12 +112,14 @@
             <div class="form-group pt-2">
               <input
                 type="submit"
-                id="signupBtn"
+                id="modifyBtn"
                 class="btn btn-block btn-primary"
                 onClick="modifyStudy()"
                 value="스터디 수정하기"
               />
+              <input type="hidden" name = "study_id" value="<%= study.study_id %>" />
             </div>
+
         </form>
         </div>
       </div>
