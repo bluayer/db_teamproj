@@ -262,7 +262,6 @@ router.post('/update', (req, res, next) => {
   //console.log(req.body);
   //console.log(study_id);
 
-
   var easypath_id = parseInt(req.param("easypath_id")); //지금 front에 easypath관련 등록부분이없어서 1로 상수정함
   var study_title = req.param('title');
   var study_content = req.param('content');
@@ -286,11 +285,6 @@ router.post('/update', (req, res, next) => {
   var sql = `UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
   SET easypath_id = ${easypath_id}, study_title = '${study_title}', study_content = '${study_content}', max_num_people = ${max_num_people}, study_location = '${study_location}' WHERE (study_id = ${study_id});`;
 
-
-/*  var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id)
-  VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and ///max_num_people=${max_num_people} and study_location='${study_location}')
-  , ${user_id});`;*/
-
   connection.query(sql,(error, results1, fields) => {
     if (error) {//에러가뜨면 이쪽을실행함
       Console.log('error is')
@@ -305,6 +299,88 @@ router.post('/update', (req, res, next) => {
       }
     })
   });
+
+//스터디 삭제하기 버튼 눌렀을 때
+/* 여기서 해야될 거가 delete 버튼을 누르면 실제로 DB에서 데이터를 삭제하는 거지
+
+  해당 스터디 이름의  study_id가 있는 row 가 전부 삭제 되어야함
+  먼저 participation_info table에서 study_info가 있는 row를 모두 삭제하고 (- 서브쿼리에서  study_id를 찾는다)
+  study_info table 에서 삭제하자*/
+
+  router.post('/delete', (req, res, next) => {
+    const { user_id } = req.session;
+    const { study_id } = req.body;
+    console.log(study_id); // study_id
+    console.log(user_id); // user_id who wants getting out of study.
+
+    const sql_deleteParticipant=`DELETE FROM REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO WHERE study_id=${study_id};`
+    const sql_deleteStudy=`DELETE FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_id=${study_id};`
+
+    const requirements=[user_id,study_id];
+    const requirement1=[study_id];
+
+  if(study_id&&user_id){
+    connection.query(sql_deleteParticipant, requirements,(error,results,fields)=>{
+      if (error){
+        Console.log('error is'+error);
+      }
+      else{
+        console.log('Delete study participant info successful'+JSON.stringify(results));
+        console.log(sql_deleteParticipant);
+
+        connection.query(sql_deleteStudy,requirement1,(error,results2)=>{  //현재인원수 업데이트
+          if (error){
+            Console.log('error is'+error);
+            res.write("<script language=\"javascript\">alert('Error in updating!!!')</script>");
+            res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+            res.end();
+          }
+          else{
+            console.log('Delete study info successful'+JSON.stringify(results2));
+            console.log(sql_deleteStudy)
+          }
+        })
+        res.redirect('/');
+      }
+  })
+  }
+  });
+
+  //스터디 수정하기
+  router.post('/modify', (req, res, next) => {
+    const { session } = req;
+    const { study_id } = req.body;
+    console.log(study_id);
+    console.log("수정 페이지");
+    console.log(req.body);
+    const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
+    const requirements_study = [study_id];
+    const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
+
+    connection.query(sql_study, requirements_study, (error, results, fields) => {
+      // console.log("about study" + results);
+      const study = results[0];
+      const requirements_user = [study.user_id];
+      if (error) {
+        // error handling plz
+      } else {
+
+        connection.query(sql_user, requirements_user, (error, results2, fields) => {
+          if (error) {
+            // error handling plz
+          } else {
+            // console.log("about user" + results2);
+            const writer = results2[0];
+            res.render('../views/study/modify', { session , study, writer });
+          }
+        })
+      }
+    })
+
+
+  });
+
+
 
 router.get('/show/:id', (req, res, next) => {
   const { session } = req;
