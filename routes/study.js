@@ -21,6 +21,8 @@ router.get('/new', (req, res, next) => {
   res.render('../views/study/new', { session });
 });
 
+
+
 // 스터디 등록하기에서 값 입력하고 등록하기 버튼클릭햇을때 처리
 router.post('/create', (req, res, next) => {
   const { session } = req;
@@ -61,8 +63,8 @@ router.post('/create', (req, res, next) => {
   var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time)
 VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', 0, 0); `;
 
-  var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id) 
-VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and max_num_people=${max_num_people} and study_location='${study_location}') 
+  var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id)
+VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and max_num_people=${max_num_people} and study_location='${study_location}')
 , ${user_id});`;
 
   connection.query(sql,(error, results1, fields) => {
@@ -108,6 +110,11 @@ router.post('/apply', (req, res, next) => {
   const { study_id } = req.body;
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants applying to study.
+
+//moco should delete
+  console.log("//////////");
+  console.log(req.body); // user_id who wants applying to study.
+  console.log("///////////");
 
   const sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
   const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
@@ -212,18 +219,53 @@ if(study_id&&user_id){
 }
 });
 
+//스터디 수정하기
 
+router.post('/modify', (req, res, next) => {
+  const { session } = req;
+  const { study_id } = req.body;
+  console.log(req);
+  console.log("수정 페이지");
+  console.log(req.body);
+  const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
+  const requirements_study = [study_id];
+  const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
+
+  connection.query(sql_study, requirements_study, (error, results, fields) => {
+    // console.log("about study" + results);
+    const study = results[0];
+    const requirements_user = [study.user_id];
+    if (error) {
+      // error handling plz
+    } else {
+
+      connection.query(sql_user, requirements_user, (error, results2, fields) => {
+        if (error) {
+          // error handling plz
+        } else {
+          // console.log("about user" + results2);
+          const writer = results2[0];
+          res.render('../views/study/modify', { session , study, writer });
+        }
+      })
+    }
+  })
+
+
+});
 
 router.get('/show/:id', (req, res, next) => {
   const { session } = req;
   const { id } = req.params;
   console.log(id); // it's study_id
+  //console.log("////////////////");
   const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
   const requirements_study = [id];
+
   const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
 
   connection.query(sql_study, requirements_study, (error, results, fields) => {
-    // console.log("about study" + results);
+    //console.log("about study" + results);
     const study = results[0];
     const requirements_user = [study.user_id];
     if (error) {
@@ -293,5 +335,11 @@ router.get('/posts/search', (req, res, next) => {
 
 
 })
+
+
+
+
+
+
 
 module.exports = router;
