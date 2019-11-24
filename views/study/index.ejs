@@ -19,7 +19,7 @@
 <body>
     <% include ../partial/header.ejs %>
     <div class="container post post-index">
-      
+
       <br><br><br><br><br><br>
       <h2>Study</h2>
       <h5>Let's study together!!</h5>
@@ -57,16 +57,17 @@
         <!-- <% //if(posts == null || posts.length == 0){ %> -->
           <tr>
             <!-- <td class="noData" colspan=100> There is no data to show :( </td> -->
-            
+
             <br>
             <center>
             <!-- <img src="/img/peace.jpg" width="350vw" height="350vh"> -->
-     
+
             <br>
             <!-- <h3>inner peace...</h3> -->
           </center>
           </tr>
 
+    <input type="hidden" name = "study_id" value="<%= study.study_id %>" />
 
           <!-- <% //} %> -->
             <div class="row">
@@ -76,6 +77,7 @@
                     <h5 class="card-title"><%= s.study_id %> </h5>
                     <h6 class="card-subtitle mb-2 text-muted"><%= s.study_title %></h6>
                     <p class="card-text"><%= s.study_content %></p>
+                    <input type="hidden" name = "easypath_id" value = "<%= study.easypath_id %>" /> 
                     <a href="/study/show/<%= s.study_id %>" class="card-link">스터디를 보자</a>
                     <br>
                     <a class="card-link"><%= s.created_time %></a>

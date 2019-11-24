@@ -6,6 +6,7 @@ const Console = console;
 router.get('/', (req, res, next) => {
   const { session } = req;
   const sql = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO`;
+  console.log(session);
   connection.query(sql, (error, results, fields) => {
     if (error) {
       //error handling plz
@@ -235,12 +236,15 @@ router.post('/modify', (req, res, next) => {
     const study = results[0];
     const requirements_user = [study.user_id];
     if (error) {
-      // error handling plz
+      res.write("<script language=\"javascript\">alert('Fail to modify')</script>");
+      res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+      res.end();
     } else {
 
       connection.query(sql_user, requirements_user, (error, results2, fields) => {
         if (error) {
-          // error handling plz
+          res.write("<script language=\"javascript\">alert('Fail to modify')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
         } else {
           // console.log("about user" + results2);
           const writer = results2[0];
@@ -340,45 +344,12 @@ router.post('/update', (req, res, next) => {
             console.log(sql_deleteStudy)
           }
         })
-        res.redirect('/');
+        res.redirect('./');
       }
   })
   }
   });
 
-  //스터디 수정하기
-  router.post('/modify', (req, res, next) => {
-    const { session } = req;
-    const { study_id } = req.body;
-    console.log(study_id);
-    console.log("수정 페이지");
-    console.log(req.body);
-    const sql_study = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE (study_id = ?)`
-    const requirements_study = [study_id];
-    const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
-
-    connection.query(sql_study, requirements_study, (error, results, fields) => {
-      // console.log("about study" + results);
-      const study = results[0];
-      const requirements_user = [study.user_id];
-      if (error) {
-        // error handling plz
-      } else {
-
-        connection.query(sql_user, requirements_user, (error, results2, fields) => {
-          if (error) {
-            // error handling plz
-          } else {
-            // console.log("about user" + results2);
-            const writer = results2[0];
-            res.render('../views/study/modify', { session , study, writer });
-          }
-        })
-      }
-    })
-
-
-  });
 
 
 
