@@ -112,70 +112,84 @@ router.post('/apply', (req, res, next) => {
   console.log(study_id); // study_id
   console.log(user_id); // user_id who wants applying to study.
 
-//moco should delete
-  console.log("//////////");
-  console.log(req.body); // user_id who wants applying to study.
-  console.log("///////////");
+//  const sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
+//  const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
+  const sql_compare=`SELECT cur_num_people,max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO where study_title=${study_id};`;
 
-  const sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
-  const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
   const sql=`INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO(study_id, user_id)SELECT i.study_id, u.user_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO as i, REALLY_FINAL_DB.TBL_USER_INFO as u
 WHERE i.study_id=${study_id} AND u.user_id=${user_id};`;
 
 
 const requirement1=[study_id];
 const requirements=[user_id, study_id];
+const requirements_compare=[study_id];
 if(user_id&& study_id){
-  if(sql_curNum>=sql_maxNum){   //TODO
-    //console.log("OVER MAXIMUM");
-      res.write("<script language=\"javascript\">alert('Number of people reached the maximum!')</script>");
-      res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
-      res.end();
+connection.query(sql_compare, requirements_compare,(error,result1)=>{
+  if (error){
+    console.log('error is'+error);
+    res.write("<script language=\"javascript\">alert('Error!!!')</script>");
+    res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+    res.end();
   }
-  else{  //현재 인원이 max 인원보다 작을때 추가
-    //console.log('ADD!!!');
-    connection.query(sql, requirements, (error,results)=>{ //스터디원 추가하기
-      if (error){ //에러 메세지
-      if(error.code=='ER_DUP_ENTRY'){
-          res.write("<script language=\"javascript\">alert('Already Exist!')</script>");
-          res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
-          res.end();
-        }
-        else{
-      Console.log('error is'+error);
-        res.write("<script language=\"javascript\">alert('Error!!!')</script>");
-        res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
-        res.end();
-      }
-      }
-      //if(results.length>0){ //추가가 성공적
-      else{
-        console.log('Insert to study_participant_info Success'+JSON.stringify(results));
-        console.log(sql);
-      //res.write("<script language=\"javascript\">alert('Welcome! Join Successful!')</script>");
-      //res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
-    //  res.end();
-        const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
-        SET cur_num_people=cur_num_people+1
-        where study_id=${study_id};`;
-        connection.query(sql_updateNum,requirement1,(error,results2)=>{  //현재인원수 업데이트
-          if (error){
+  else{
+    console.log('GOT INFO');
+    const max=result1[0].max_num_people;
+    var cur=result1[0].cur_num_people;
+      if(cur<max){  //현재 인원이 max 인원보다 작을때 추가
+        console.log('ADD!!!');
+      connection.query(sql, requirements, (error,results)=>{ //스터디원 추가하기
+        if (error){ //에러 메세지
+          if(error.code=='ER_DUP_ENTRY'){
+            res.write("<script language=\"javascript\">alert('You are already signed up for this study!')</script>");
+            res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
+            res.end();
+          }
+          else{
             Console.log('error is'+error);
             res.write("<script language=\"javascript\">alert('Error!!!')</script>");
             res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
-            //res.redirect(`/study`);
             res.end();
           }
-          else{ //현재인원수 업데이트가 성공적일
-            console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
-          }
-        })
-      res.redirect('/')
-
+        }
+        //if(results.length>0){ //추가가 성공적
+        else{
+        //  res.write("<script language=\"javascript\">alert('추가되었습니//!')</script>");
+          //res.write("<script language=\"javascript\">window.location=\"/study/\"</script>");
+        //  res.end();
+          console.log('Insert to study_participant_info Success'+JSON.stringify(results));
+          console.log(sql);
+          //res.write("<script language=\"javascript\">alert('Welcome! Join Successful!')</script>");
+          //res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+          //  res.end();
+          const sql_updateNum=`UPDATE REALLY_FINAL_DB.TBL_STUDY_INFO
+          SET cur_num_people=cur_num_people+1
+          where study_id=${study_id};`;
+          connection.query(sql_updateNum,requirement1,(error,results2)=>{  //현재인원수 업데이트
+            if (error){
+              Console.log('error is'+error);
+              res.write("<script language=\"javascript\">alert('Error!!!')</script>");
+              res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+              //res.redirect(`/study`);
+              res.end();
+            }
+            else{ //현재인원수 업데이트가 성공적일
+              console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
+            }
+          })
+          res.write("<script language=\"javascript\">alert('Added successfully!')</script>");
+          res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+        //  res.redirect('/')
+        }
+      })
+    }
+    else{   //TODO
+      //console.log("OVER MAXIMUM");
+        res.write("<script language=\"javascript\">alert('Number of people reached the maximum!')</script>");
+        res.write("<script language=\"javascript\">window.location=\"/study\"</script>");
+        res.end();
       }
-
-    })
-}
+  }
+  })
 }
 });
 
@@ -214,7 +228,7 @@ if(study_id&&user_id){
           console.log('UPDATE cur_num_people success'+JSON.stringify(results2));
         }
       })
-      res.redirect('/');
+      res.redirect('/study');
     }
 })
 }
