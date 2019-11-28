@@ -39,6 +39,8 @@ router.get('/show/:id', (req, res, next) => {
   const sql_user = `SELECT username, email FROM REALLY_FINAL_DB.TBL_USER_INFO WHERE (user_id = ?)`
   const sql_specific = `SELECT * FROM REALLY_FINAL_DB.TBL_EASYPATH_SPECIFIC_INFO WHERE (easypath_id = ?) ORDER BY specific_num`
   const requirements_specific = [id];
+  const sql_reco = `SELECT * FROM REALLY_FINAL_DB.TBL_EASYPATH_RECOMMEND_INFO
+  WHERE easypath_id = ${id} AND user_id = ${session.user_id} LIMIT 1;`;
 
   connection.query(sql_easy, requirements_easy, (error, results, fields) => {
     // console.log("about study" + results);
@@ -57,10 +59,26 @@ router.get('/show/:id', (req, res, next) => {
           connection.query(sql_specific, requirements_specific, (error, results3, fields) => {
             if (error) {
               console.log(error);
+            } else {
+              connection.query(sql_reco, (err, final, fields) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log(final);
+                  const specific = results3;
+                  let reco_chk;
+                  if (final.length == 0) {
+                    reco_chk = true;
+                  } else {
+                    reco_chk = false;
+                  }
+                  
+                  res.render('../views/easypath/show', { session , easypath, writer, specific, reco_chk });  
+                }
+                
+              });
             }
-            const specific = results3;
-            // console.log("Specific is " + JSON.stringify(specific));
-            res.render('../views/easypath/show', { session , easypath, writer, specific: results3 });
+            
           })
           // console.log("about user" + results2);
 
@@ -144,7 +162,7 @@ router.post('/create', (req, res, next) => {
 
 
 //localhost:3000/easypath/posts/search?searchCategory=author&searchWord=a 이러한 url이 들어오면 처리
-router.get('/posts/search', (req, res, next) => {
+router.post ('/posts/search', (req, res, next) => {
 
   const { session } = req; //이거 무조건 넣어주셈 로그인 세션관련인데 이거안넣어주면 res.render에서 session define 안댔다구 오류남!
 
@@ -194,9 +212,90 @@ router.get('/posts/search', (req, res, next) => {
 
     }
   })
+});
 
+router.post('/recommend', (req, res, next) => {
+  const { session } = req;
+  const { user_id } = session;
+  const { easypath_id } = req.body; 
 
-})
+  const insert_recommend = `INSERT INTO REALLY_FINAL_DB.TBL_EASYPATH_RECOMMEND_INFO
+  (easypath_id, user_id) 
+  VALUES (${easypath_id}, ${user_id});`;
+
+  const get_recommend = `SELECT recommend_cnt 
+  FROM REALLY_FINAL_DB.TBL_EASYPATH_INFO 
+  WHERE easypath_id = ${easypath_id};`;
+
+  connection.query(insert_recommend, (error, result, fields) => {
+    if (error) {
+
+    } else {
+      connection.query(get_recommend, (err, rec, fields) => {
+        if (err) {
+
+        } else {
+          let { recommend_cnt } = rec[0];
+          recommend_cnt ++;
+          const update_easypath = `UPDATE REALLY_FINAL_DB.TBL_EASYPATH_INFO 
+          SET recommend_cnt = ${recommend_cnt} 
+          WHERE easypath_id = ${easypath_id};`;
+
+          connection.query(update_easypath, (err, final, fields) => {
+            if (err) {
+              
+            } else {
+              res.write("<script language=\"javascript\">alert('Recommend success!')</script>");
+              res.write(`<script language="javascript">window.location="/easypath/show/${easypath_id}"</script>`);
+              res.end();
+            }
+          })
+        }
+      })
+    }
+  })
+});
+
+router.post('/delete/recommend', (req, res, next) => {
+  const { session } = req;
+  const { user_id } = session;
+  const { easypath_id } = req.body; 
+
+  const delete_recommend = `DELETE FROM REALLY_FINAL_DB.TBL_EASYPATH_RECOMMEND_INFO
+  WHERE easypath_id = ${easypath_id} AND user_id = ${user_id};`;
+
+  const get_recommend = `SELECT recommend_cnt 
+  FROM REALLY_FINAL_DB.TBL_EASYPATH_INFO 
+  WHERE easypath_id = ${easypath_id};`;
+
+  connection.query(delete_recommend, (error, result, fields) => {
+    if (error) {
+
+    } else {
+      connection.query(get_recommend, (err, rec, fields) => {
+        if (err) {
+
+        } else {
+          let { recommend_cnt } = rec[0];
+          recommend_cnt --;
+          const update_easypath = `UPDATE REALLY_FINAL_DB.TBL_EASYPATH_INFO 
+          SET recommend_cnt = ${recommend_cnt} 
+          WHERE easypath_id = ${easypath_id};`;
+
+          connection.query(update_easypath, (err, final, fields) => {
+            if (err) {
+              
+            } else {
+              res.write(`<script language="javascript">alert("You're not recommend this")</script>`);
+              res.write(`<script language="javascript">window.location="/easypath/show/${easypath_id}"</script>`);
+              res.end();
+            }
+          })
+        }
+      })
+    }
+  })
+});
 
 
 module.exports = router;

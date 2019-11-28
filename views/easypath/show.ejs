@@ -35,6 +35,8 @@
           <br>
           <p class="card-subtitle">작성일자: <%= easypath.created_time %></p>
           <br>
+          <p class="card-subtitle">추천 수: <%= easypath.recommend_cnt %></p>
+          <br>
           <hr>
           <p class="card-subtitle">Easypath 내용 :</p>
           <p class="card-text"><%= easypath.easypath_content %></p>
@@ -51,10 +53,21 @@
             <br>
             <center>
               <% if (session.loggedin) { %> 
-              <form action="/study/new" method="POST">
-                <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
-                <button type="submit" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
-              </form>
+                <form action="/study/new" method="POST">
+                  <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                  <button type="submit" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
+                </form>
+                <% if (reco_chk) { %>
+                  <form action="/easypath/recommend" method="POST">
+                    <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                    <button type="submit" class="btn btn-primary">이 Easypath 추천하기!</button>
+                  </form>
+                <% } else { %>
+                  <form action="/easypath/delete/recommend" method="POST">
+                    <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                    <button type="submit" class="btn btn-secondary">이 Easypath 해제하기!</button>
+                  </form>
+                <% } %>
               <% } %>
             </center>
           </form>

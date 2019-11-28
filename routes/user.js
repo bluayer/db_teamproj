@@ -115,14 +115,10 @@ router.post('/signup', async (req, res, next) => {
         res.write("<script language=\"javascript\">alert('There's problem in query, try again please')</script>");
         res.write("<script language=\"javascript\">window.location=\"/user/signup\"</script>");
         res.end();
-      } else if (results.length > 0){
+      } else {
         console.log('Querry success!' + results);
         res.write("<script language=\"javascript\">alert('Make your account successfully')</script>");
         res.write("<script language=\"javascript\">window.location=\"/user/login\"</script>");
-        res.end();
-      } else {
-        res.write("<script language=\"javascript\">alert('Wrong input')</script>");
-        res.write("<script language=\"javascript\">window.location=\"/user/signup\"</script>");
         res.end();
       }
 		});
