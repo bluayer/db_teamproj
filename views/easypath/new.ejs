@@ -12,9 +12,9 @@
         str += "<div class='card' style='width: 70%;'>"
         str += "<div class='card-body'>"
         str += 'Easypath ' + count + '<br>'
-        str += '<br>제목 ' + count + " <input type='text' class='form-control' name='tb1_" + count + "'>";
-        str += '<br>URL ' + count + " <input type='text' class='form-control' name='tb2_" + count + "'>";
-        str += '<br>내용 ' + count + " <input type='text' class='form-control' name='tb3_" + count + "'><BR>";
+        str += '<br>제목 ' + count + " <input type='text' class='form-control' name='title" + count + "'>";
+        str += '<br>URL ' + count + " <input type='text' class='form-control' name='url" + count + "'>";
+        str += '<br>내용 ' + count + " <input type='text' class='form-control' name='content" + count + "'><BR>";
         str += '</div></div></div><br>'
         // 추가할 폼(에 들어갈 HTML)
         var addedDiv = document.createElement('div'); // 폼 생성
@@ -83,7 +83,7 @@
               <input
                 class="form-control form-control-lg"
                 type="text"
-                name="name"
+                name="title"
                 required=""
                 placeholder="Easypath의 이름을 입력해주세요"
                 autocomplete="off"
@@ -95,7 +95,7 @@
               <input
                 class="form-control form-control-lg"
                 type="text"
-                name="name"
+                name="content"
                 required=""
                 placeholder="Easypath의 내용을 간단히 입력해주세요"
                 autocomplete="off"

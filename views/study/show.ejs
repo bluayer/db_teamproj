@@ -25,6 +25,10 @@
         alert('스터디에서 탈퇴되었습니다!')
         window.location = '/study';
       }
+      const deleteStudy = function() {
+        alert('스터디가 삭제되었습니다!')
+        window.location = '/study';
+      }
     </script>
   </head>
 
@@ -67,12 +71,17 @@
           <br>
           <p class="card-text"><%= writer.email %></p>
           <hr>
+          <br>
+          <p class="card-subtitle">이 스터디에서 사용한 이지패스 번호:</p>
+          <br>
+          <p class="cart-text"><%= study.easypath_id %> </p>
+          <hr>
             <br>
             <br />
             <center>
               <!-- User가 로그인 했으면 -->
-              <% if (session.loggedin) { %>
-                  <form action="/study/apply" method="POST">
+              <% if (session.loggedin && session.user_id != study.user_id) { %>
+                <form action="/study/apply" method="POST">
                   <input type="hidden" name="study_id" value="<%= study.study_id %>" />
                   <button type="submit" onClick="applyStudy()" class="btn btn-primary">이 스터디 신청하기</button>
                 </form>
@@ -81,6 +90,18 @@
                   <button type="submit" onClick="getOutStudy()" class="btn btn-primary">이 스터디 탈퇴하기</button>
                 </form>
               <% } %>
+              <!-- 스터디만든사람이 로그인한 경우 -->
+              <% if (session.user_id == study.user_id) { %>
+                <form action="/study/modify" method="POST">
+                  <input type="hidden" name="study_id" value="<%= study.study_id %>" />
+                  <button type="submit" onClick="modifyStudy()" class="btn btn-primary">이 스터디 수정하기</button>
+                </form>
+                <form action="/study/delete" method="POST">
+                  <input type="hidden" name="study_id" value="<%= study.study_id %>" />
+                  <button type="submit" onClick="deleteStudy()" class="btn btn-primary">이 스터디 삭제하기</button>
+                </form>
+              <% } %>
+
             </center>
           </form>
         </div>
