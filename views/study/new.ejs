@@ -49,7 +49,7 @@
               <input
                 class="form-control form-control-lg"
                 type="text"
-                name="title"
+                name="study_title"
                 required=""
                 placeholder="스터디 이름을 입력해주세요"
                 autocomplete="off"
@@ -61,7 +61,7 @@
               <textarea
                 class="form-control form-control-lg"
                 type="content"
-                name="content"
+                name="study_content"
                 required=""
                 placeholder="스터디 내용을 입력해주세요"
                 autocomplete="off"
@@ -86,9 +86,8 @@
               <select
                 class="form-control"
                 id="location"
-                name="location"
+                name="study_location"
               >
-                <!--데이터넘어 갈때는 1,2,3이렇게 넘어감-->
                 <option value="Seoul">서울</option>
                 <option value="Gyeonggi">경기</option>
                 <option value="Incheon ">인천</option>
@@ -108,31 +107,8 @@
               </select>
             </div>
 
-            <!--우선 기능구현 우선으로하기위해서 easypath_id를 입력받는걸로하였음-->
-            <!--차후에 시간이 남는다면 gui를 좀더 신경쓰면될듯-->
-            <p class="card-text">사용할 easypath 번호</p>
-            <div class="form-group">
-              <input
-                class="form-control form-control-lg"
-                required=""
-                type="easypath_id"
-                name="easypath_id"
-                placeholder="easyapth 번호를 입력해주세요"
-              />
-            </div>
-
-            <!--email정보는 userinfo에서 가져올수있으니 삭제
-            <p class="card-text">스터디장 연락처</p>
-            <div class="form-group">
-              <input
-                class="form-control form-control-lg"
-                required=""
-                type="email"
-                name="email"
-                placeholder="email을 입력해주세요"
-              />
-            </div>
-            -->
+            <input type="hidden" name="easypath_id" value="<%= easypath_id %>" />
+            
             <!--버튼을 클릭하면 enrollStudy()함수를 실행함 그 내용은 맨위에 보면있음-->
             <div class="form-group pt-2">
               <input
