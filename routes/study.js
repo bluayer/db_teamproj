@@ -33,17 +33,17 @@ router.post('/create', (req, res, next) => {
   var max_num_people = parseInt(req.param('person_num')); //'1'이렇게 와서 이걸 정수형으로바꿈
   //var cur_num_people = 1; database에서 default값을 1로해주었음
 
-
+/*
   console.log(user_id);
   console.log(easypath_id);
   console.log(study_title);
   console.log(study_content);
   console.log(max_num_people);
   console.log(study_location);
-
+*/
 
   var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time)
-VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', 0, 0); `;
+VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', utc_timestamp(), utc_timestamp());`;
 
   var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id)
 VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and max_num_people=${max_num_people} and study_location='${study_location}')
