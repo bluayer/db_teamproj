@@ -50,10 +50,12 @@
           <% }); %>
             <br>
             <center>
+              <% if (session.loggedin) { %> 
               <form action="/study/new" method="POST">
                 <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
                 <button type="submit" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
               </form>
+              <% } %>
             </center>
           </form>
         </div>

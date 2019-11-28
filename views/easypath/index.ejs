@@ -51,8 +51,9 @@
     <br>
       <hr>
       <br>
-
-      <button type="button" onClick="location.href='/easypath/new'" class="btn btn-primary">새 발자취 등록</button>
+      <% if (session.loggedin) { %> 
+        <button type="button" onClick="location.href='/easypath/new'" class="btn btn-primary">새 발자취 등록</button>
+      <% } %>
       <div class="row">
 
         <!--easypath.js에서 res.render('../views/easypath/index', { session, easypath : results});이런 코드를 실행하면
