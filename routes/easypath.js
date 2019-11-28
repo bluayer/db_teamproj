@@ -85,7 +85,7 @@ router.post('/create', (req, res, next) => {
   const easypathSQL = `
   INSERT INTO REALLY_FINAL_DB.TBL_EASYPATH_INFO
   (user_id, easypath_title, specific_cnt, easypath_content, recommend_cnt, category, created_time, updated_time)
-  VALUES (${user_id}, '${title}', ${cnt}, '${content}', 0, '${category}', utc_timestamp(), utc_timestamp())
+  VALUES (${user_id}, '${title}', ${cnt}, '${content}', 0, '${category}', CONVERT_TZ(NOW(), 'SYSTEM', '+09:00'), CONVERT_TZ(NOW(), 'SYSTEM', '+09:00'))
   `;
 
   connection.query(easypathSQL, (error, results, fields) => {

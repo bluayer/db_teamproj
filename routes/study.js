@@ -11,6 +11,8 @@ router.get('/', (req, res, next) => {
     if (error) {
       //error handling plz
     } else {
+      console.log(results);
+      // console.log(typeof results[35].created_time);
       res.render('../views/study/index', { session, study : results });
     }
   })
@@ -43,7 +45,7 @@ router.post('/create', (req, res, next) => {
 */
 
   var sql = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_INFO(user_id, easyPath_id, study_title, study_content, max_num_people, study_location, created_time, updated_time)
-VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', utc_timestamp(), utc_timestamp());`;
+VALUES (${user_id}, ${easypath_id}, "${study_title}", "${study_content}", ${max_num_people}, '${study_location}', CONVERT_TZ(NOW(), 'SYSTEM', '+09:00'), CONVERT_TZ(NOW(), 'SYSTEM', '+09:00'));`;
 
   var sql2 = `INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO (study_id, user_id)
 VALUES ( (SELECT study_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE user_id=${user_id} and study_title='${study_title}' and study_content='${study_content}' and max_num_people=${max_num_people} and study_location='${study_location}')
