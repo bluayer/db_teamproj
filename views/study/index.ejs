@@ -74,13 +74,18 @@
               <% study.forEach(function(s) { %>
                 <div class="card" style="width: 18rem; margin: 2rem;">
                   <div class="card-body">
-                    <h5 class="card-title"><a href="/study/show/<%= s.study_id %>"><%= s.study_title %></a></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><%= s.user_id %></h6>
-                    <p class="card-text"><%= s.study_content %></p>
+                    <center>
+                      <h5 class="card-title"><a href="/study/show/<%= s.study_id %>"><%= s.study_title %></a></h5>
+                    </center>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-weight: bold;">작성자 : <%= s.user_id %></h6>
+                    <p class="card-text"><%= s.study_content.length > 30 ? s.study_content.substring(0, 30)+ "..." : s.study_content %></p>
                     <input type="hidden" name = "easypath_id" value = "<%= study.easypath_id %>" /> 
-                    <a href="/study/show/<%= s.study_id %>" class="card-link">스터디를 보자</a>
+                    <a class="card-link">작성 일자 : <%= s.created_time %></a>
                     <br>
-                    <a class="card-link"><%= s.created_time %></a>
+                    <br>
+                    <center>
+                      <button class="btn-sm btn-secondary" onClick="location.href=`/study/show/<%= s.study_id %>`">스터디를 확인하기</button>
+                    </center>
                   </div>
                 </div>
               <% }) %>
