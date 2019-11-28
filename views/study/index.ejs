@@ -74,8 +74,8 @@
               <% study.forEach(function(s) { %>
                 <div class="card" style="width: 18rem; margin: 2rem;">
                   <div class="card-body">
-                    <h5 class="card-title"><%= s.study_id %> </h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><%= s.study_title %></h6>
+                    <h5 class="card-title"><a href="/study/show/<%= s.study_id %>"><%= s.study_title %></a></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= s.user_id %></h6>
                     <p class="card-text"><%= s.study_content %></p>
                     <input type="hidden" name = "easypath_id" value = "<%= study.easypath_id %>" /> 
                     <a href="/study/show/<%= s.study_id %>" class="card-link">스터디를 보자</a>

@@ -65,8 +65,8 @@
         <% easypath.forEach(function(e) { %>
           <div class="card" style="width: 18rem; margin: 2rem;">
             <div class="card-body">
-              <h5 class="card-title"><%= e.easypath_id %> </h5>
-              <h6 class="card-subtitle mb-2 text-muted"><%= e.easypath_title %></h6>
+              <h5 class="card-title"><a href="/easypath/show/<%= e.easypath_id %>"><%= e.easypath_title %></a></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><%= e.user_id %></h6>
               <p class="card-text"><%= e.easypath_content %></p>
               <a href="/easypath/show/<%= e.easypath_id %>" class="card-link">이지패스를 보자</a>
               <br>
