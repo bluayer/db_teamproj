@@ -52,7 +52,7 @@
           <% }); %>
             <br>
             <center>
-              <% if (session.loggedin) { %> 
+              <% if (session.loggedin) { %>
                 <form action="/study/new" method="POST">
                   <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
                   <button type="submit" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
@@ -65,7 +65,7 @@
                 <% } else { %>
                   <form action="/easypath/delete/recommend" method="POST">
                     <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
-                    <button type="submit" class="btn btn-secondary">이 Easypath 해제하기!</button>
+                    <button type="submit" class="btn btn-secondary">이 Easypath 추천 해제하기!</button>
                   </form>
                 <% } %>
               <% } %>
