@@ -7,6 +7,7 @@ router.get('/', (req, res, next) => {
   const { session } = req;
   const sql = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO`;
   console.log(session);
+  res.redirect('/easypath')
   connection.query(sql, (error, results, fields) => {
     if (error) {
       //error handling plz
