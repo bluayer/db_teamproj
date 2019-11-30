@@ -98,7 +98,7 @@ router.post('/apply', (req, res, next) => {
 
 //  const sql_curNum=`SELECT cur_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
 //  const sql_maxNum=`SELECT max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO WHERE study_title=${study_id};`
-  const sql_compare=`SELECT cur_num_people,max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO where study_title=${study_id};`;
+  const sql_compare=`SELECT cur_num_people,max_num_people FROM REALLY_FINAL_DB.TBL_STUDY_INFO where study_id=${study_id};`;
 
   const sql=`INSERT INTO REALLY_FINAL_DB.TBL_STUDY_PARTICIPANT_INFO(study_id, user_id)SELECT i.study_id, u.user_id FROM REALLY_FINAL_DB.TBL_STUDY_INFO as i, REALLY_FINAL_DB.TBL_USER_INFO as u
 WHERE i.study_id=${study_id} AND u.user_id=${user_id};`;
