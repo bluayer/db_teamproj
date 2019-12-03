@@ -77,7 +77,7 @@
                     <center>
                       <h5 class="card-title"><a href="/study/show/<%= s.study_id %>"><%= s.study_title %></a></h5>
                     </center>
-                    <h6 class="card-subtitle mb-2 text-muted" style="font-weight: bold;">작성자 : <%= s.user_id %></h6>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-weight: bold;">작성자 번호: <%= s.user_id %></h6>
                     <p class="card-text"><%= s.study_content.length > 30 ? s.study_content.substring(0, 30)+ "..." : s.study_content %></p>
                     <input type="hidden" name = "easypath_id" value = "<%= study.easypath_id %>" /> 
                     <a class="card-link">작성 일자 : <%= s.created_time %></a>
