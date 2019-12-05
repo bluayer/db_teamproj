@@ -24,6 +24,13 @@
       <hr>
       <label>검색</label>
       <div class="container">
+
+        <!-- 이 부분이 검색하는 부분임 작성자로 선택후 검색어'a'를 입력하고 검색 버튼을 누르면  -->
+        <!-- localhost:3000/easypath/posts/search?searchCategory=author&searchWord=a  -->
+        <!-- 위와 같은 url을 요청한다.(웹페이지상엔서는 안뜨고 크롬 개발자도그로 보면뜸) -->
+        <!-- 이거는 get방식으로 데이터를 전송함 그래서 이부분은 easypath.js에서 router.get()
+        router.get('/posts/search', (req, res, next)가 해당 url을 처리한다.
+        버튼 클릭 이벤트 처리는 아래부분에 javascript를 참고 -->
         <form action="/easypath/posts/search" method="get" id="searchAction" name="searchAction">
           <div class="form-group row">
             <select name="searchCategory" form="searchAction">
@@ -44,58 +51,35 @@
     <br>
       <hr>
       <br>
-        <div class="buttons">
-          <!-- <% //if(isAuthenticated){ %>
-            <a class="btn-floating btn-large cyan pulse" href="/posts/new"><i class="material-icons" id="scrollBtn">edit</i></a>
-            <% //} %> -->
-        </div>
+      <% if (session.loggedin) { %> 
+        <button type="button" onClick="location.href='/easypath/new'" class="btn btn-primary">새 발자취 등록</button>
+      <% } %>
+      <div class="row">
 
-        <!-- <% //if(posts == null || posts.length == 0){ %> -->
-          <tr>
-            <!-- <td class="noData" colspan=100> There is no data to show :( </td> -->
-            <button type="button" onClick="location.href='/easypath/new'" class="btn btn-primary">새 발자취 등록</button>
-            <br>
-            <center>
-            <!-- <img src="/img/peace.jpg" width="350vw" height="350vh"> -->
-     
-            <br>
-            <!-- <h3>inner peace...</h3> -->
-          </center>
-          </tr>
-          <!-- <% //} %> -->
-            <!-- <div class="row ">
-              <% // posts.forEach(function(post) { %>
-                <div class="col s12 m6">
-                  <div class="card white">
-                    <div class="card-content">
-                      <span class="card-title"><a href="/posts/<%= //post._id %>"><%= //post.title %></a></span>
-                      <p>
-                        <%= //post.body.length > 30 ? //post.body.substring(0, 30) + "..." : //post.body %>
-                      </p>
-                    </div>
-                    <div class="card-action">
-                      <a href="/posts/<%= //post._id %>">
-                        <%= //post.author ? post.author.username : "" %>
-                      </a>
-                      <a>
-                        <%= //post.createdDate %>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <% //}) %>
-            </div> -->
-
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title"><a href="/easypath/show">발자아취이</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">이거슨 3학년에게 필요한 디비</h6>
-                <p class="card-text">야 너도 디비 잘하고 싶어? 나두!!</p>
-                <a href="/easypath/show" class="card-link">Easypath 확인하기</a>
-                <a href="#" class="card-link">아 모름 직다 태그</a>
-              </div>
+        <!--easypath.js에서 res.render('../views/easypath/index', { session, easypath : results});이런 코드를 실행하면
+          이렇게 index.ejs는 easypath를 사용함으로써 results값을 받아올수있음
+          꺽새랑 퍼센트잇는건 ejs문법인데 나도잘모르니까 검색해보시고 이거는 반복문하는거임
+          forEach는 c언어로따면 for(i=0;i<length;i++) a=arr[i]; 이런거임
+          easypath는 [객체,객체,객체,객체,..]이렇게 객체를 담은 리스트인데
+          foreach문을통해서 e가 easypath리스트의 객체 하나하나를 조회함 e=arr[i]라고생각하면댐
+          e.easypath_id이거나 e.easypath_title은 칼럼부분이니 설명생략-->
+        <% easypath.forEach(function(e) { %>
+          <div class="card" style="width: 18rem; margin: 2rem;">
+            <div class="card-body">
+              <center>
+                <h5 class="card-title"><a href="/easypath/show/<%= e.easypath_id %>"><%= e.easypath_title %></a></h5>
+              </center>
+              <p class="card-text"><%= e.easypath_content.length > 30 ? e.easypath_content.substring(0, 55) + "..." : e.easypath_content %></p>
+              <a class="card-link">작성 일자 : <%= e.created_time %></a>
+              <br>
+              <br>
+              <center>
+                <button class="btn-sm btn-secondary" onClick="location.href=`/easypath/show/<%= e.easypath_id %>`">이지패스를 확인하기</button>
+              </center>
             </div>
+          </div>
+        <% }) %>
+      </div>
 
             <script>
               function searchContent() {

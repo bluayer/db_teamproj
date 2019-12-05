@@ -18,8 +18,8 @@
   form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction"
   -->
   <script>
-    function enrollStudy() {
-      $('#createAction').submit();
+    function modifyStudy() {
+      $('#modifyAction').submit();
     }
   </script>
 
@@ -36,24 +36,24 @@
   <div class="container">
     <div class="card" style="width: 70%;">
       <div class="card-body">
-        <h5 class="card-title">스터디 등록하기</h5>
-        <h6 class="card-subtitle mb-2 text-muted">스터디를 만들어주세요!</h6>
+        <h5 class="card-title">스터디 수정하기</h5>
+        <h6 class="card-subtitle mb-2 text-muted">스터디를 수정해주세요!</h6>
         <hr>
 
         <!--form 어쩌구를쓰면 get이나 post방식으로 데이터를보내겠다는거임 action="/study/create"이면
           /study/create링크로 데이터를 보내겟다는거고 그러면 우리는 study.js에서
           router.post('/create) 이런식으로 처리를 하면된다.-->
-        <form name="baseForm" action="/study/create" method="post" id="createAction" name="createAction">
+        <form name="baseForm" action="/study/update" method="post" id="modifyAction" name="modifyAction">
           <p class="card-text">스터디 이름</p>
           <div class="form-group">
-              <input
+              <textarea
                 class="form-control form-control-lg"
                 type="text"
-                name="study_title"
+                name="title"
                 required=""
-                placeholder="스터디 이름을 입력해주세요"
                 autocomplete="off"
-              />
+                rows="1"
+              ><%= study.study_title %></textarea>
             </div>
 
             <p class="card-text">스터디 내용</p>
@@ -61,24 +61,23 @@
               <textarea
                 class="form-control form-control-lg"
                 type="content"
-                name="study_content"
+                name="content"
                 required=""
-                placeholder="스터디 내용을 입력해주세요"
                 autocomplete="off"
                 rows="5"
-              ></textarea>
+              ><%= study.study_content %></textarea>
             </div>
 
             <p class="card-text">제한 인원</p>
             <div class="form-group">
-              <input
+              <textarea
                 class="form-control form-control-lg"
                 id="person_num"
                 name="person_num"
                 type="person_num"
                 required=""
-                placeholder="스터디 제한 인원을 입력해주세요"
-              />
+                rows="1"
+              ><%= study.max_num_people %></textarea>
             </div>
 
             <p class="card-text">스터디 지역</p>
@@ -86,39 +85,42 @@
               <select
                 class="form-control"
                 id="location"
-                name="study_location"
+                name="location"
               >
-                <option value="Seoul">서울</option>
-                <option value="Gyeonggi">경기</option>
-                <option value="Incheon ">인천</option>
-                <option value="Daegu">대구</option>
-                <option value="Daejeon">대전</option>
-                <option value="Busan">부산</option>
-                <option value="Chungbuk">충북</option>
-                <option value="Chungnam">충남</option>
-                <option value="Gyeongbuk">경북</option>
-                <option value="Gyeongnam">경남</option>
-                <option value="Jeolbuk">전북</option>
-                <option value="Jeolnam">전남</option>
-                <option value="Gangwon">강원</option>
-                <option value="Gwangju">광주</option>
-                <option value="Jeju">제주</option>
-              -->
+                <!--데이터넘어 갈때는 1,2,3이렇게 넘어감-->
+                <option value="1">서울</option>
+                <option value="2">경기</option>
+                <option value="3">인천</option>
+
               </select>
             </div>
 
-            <input type="hidden" name="easypath_id" value="<%= easypath_id %>" />
-            
-            <!--버튼을 클릭하면 enrollStudy()함수를 실행함 그 내용은 맨위에 보면있음-->
+            <!--우선 기능구현 우선으로하기위해서 easypath_id를 입력받는걸로하였음-->
+            <!--차후에 시간이 남는다면 gui를 좀더 신경쓰면될듯-->
+
+            <p class="card-text">사용할 easypath 번호</p>
+            <div class="form-group">
+              <textarea
+                class="form-control form-control-lg"
+                type="easypath_id"
+                name="easypath_id"
+                required=""
+                rows="1"
+              /><%= study.easypath_id %></textarea>
+            </div>
+
             <div class="form-group pt-2">
               <input
                 type="submit"
-                id="signupBtn"
+                id="modifyBtn"
                 class="btn btn-block btn-primary"
-                onClick="enrollStudy()"
-                value="스터디 등록하기"
+                onClick="modifyStudy()"
+                value="스터디 수정하기"
               />
+              <input type="hidden" name = "study_id" value="<%= study.study_id %>" />
+              <input type="hidden" name = "easypath_id" value="<%= study.easypath_id %>" />
             </div>
+
         </form>
         </div>
       </div>

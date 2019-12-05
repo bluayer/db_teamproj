@@ -19,7 +19,7 @@
 <body>
     <% include ../partial/header.ejs %>
     <div class="container post post-index">
-      
+
       <br><br><br><br><br><br>
       <h2>Study</h2>
       <h5>Let's study together!!</h5>
@@ -46,57 +46,48 @@
     <br>
       <hr>
       <br>
-        <div class="buttons">
-          <!-- <% //if(isAuthenticated){ %>
+        <!-- <div class="buttons">
+            <% //if(isAuthenticated){ %>
             <a class="btn-floating btn-large cyan pulse" href="/posts/new"><i class="material-icons" id="scrollBtn">edit</i></a>
-            <% //} %> -->
-        </div>
+            <% //} %>
+            <button type="button" onClick="location.href='/study/new'" class="btn btn-primary">새 스터디 등록</button>
+            <div class="row">
+        </div> -->
 
         <!-- <% //if(posts == null || posts.length == 0){ %> -->
           <tr>
             <!-- <td class="noData" colspan=100> There is no data to show :( </td> -->
-            
+
             <br>
             <center>
             <!-- <img src="/img/peace.jpg" width="350vw" height="350vh"> -->
-     
+
             <br>
             <!-- <h3>inner peace...</h3> -->
           </center>
           </tr>
+
+    <input type="hidden" name = "study_id" value="<%= study.study_id %>" />
+
           <!-- <% //} %> -->
-            <!-- <div class="row ">
-              <% // posts.forEach(function(post) { %>
-                <div class="col s12 m6">
-                  <div class="card white">
-                    <div class="card-content">
-                      <span class="card-title"><a href="/posts/<%= //post._id %>"><%= //post.title %></a></span>
-                      <p>
-                        <%= //post.body.length > 30 ? //post.body.substring(0, 30) + "..." : //post.body %>
-                      </p>
-                    </div>
-                    <div class="card-action">
-                      <a href="/posts/<%= //post._id %>">
-                        <%= //post.author ? post.author.username : "" %>
-                      </a>
-                      <a>
-                        <%= //post.createdDate %>
-                      </a>
-                    </div>
+            <div class="row">
+              <% study.forEach(function(s) { %>
+                <div class="card" style="width: 18rem; margin: 2rem;">
+                  <div class="card-body">
+                    <center>
+                      <h5 class="card-title"><a href="/study/show/<%= s.study_id %>"><%= s.study_title %></a></h5>
+                    </center>
+                    <p class="card-text"><%= s.study_content.length > 30 ? s.study_content.substring(0, 30)+ "..." : s.study_content %></p>
+                    <input type="hidden" name = "easypath_id" value = "<%= study.easypath_id %>" /> 
+                    <a class="card-link">작성 일자 : <%= s.created_time %></a>
+                    <br>
+                    <br>
+                    <center>
+                      <button class="btn-sm btn-secondary" onClick="location.href=`/study/show/<%= s.study_id %>`">스터디를 확인하기</button>
+                    </center>
                   </div>
                 </div>
-
-                <% //}) %>
-            </div> -->
-
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">재자구함</h5>
-                <h6 class="card-subtitle mb-2 text-muted">wogus의 재자구함</h6>
-                <p class="card-text">오반아~~~~~~~~~~~~~~~ 휘파람을 불어라~~~~~~~ 삐삐삐삐삐삐삐끼ㅣㅏ러ㅣ마ㅓㄴ인마ㅓ이ㅏㅓ</p>
-                <a href="/study/show" class="card-link">스터디를 보자</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
+              <% }) %>
             </div>
 
             <script>

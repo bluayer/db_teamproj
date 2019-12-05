@@ -45,6 +45,8 @@
         <div class="card-body">
           Username : <%= session.username %>
           <br>
+          Current your Email : <%= email %>
+          <br>
           <br>
           <form action="/user/changeinfo/email" method="POST" class="splash-container">
             <div class="form-group">
@@ -53,7 +55,7 @@
                 type="email"
                 name="email"
                 required=""
-                placeholder="변경할 이메일을 입력해주세요"
+                placeholder= "<%= email %>"
                 autocomplete="off"
               />
             </div>

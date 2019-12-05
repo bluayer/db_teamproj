@@ -28,35 +28,47 @@
     <div class="container">
       <div class="card" style="width: 70%;">
         <div class="card-body">
-          <h5 class="card-title">발자아취이</h5>
+          <h5 class="card-title"><%= easypath.easypath_title %></h5>
           <hr>
           <br>
-          <p class="card-subtitle">작성자 : joys</p>
+          <p class="card-subtitle">작성자 : <%= writer.username %> </p>
           <br>
-          <p class="card-subtitle">작성일자: 2019.11.09</p>
+          <p class="card-subtitle">작성일자: <%= easypath.created_time %></p>
+          <br>
+          <p class="card-subtitle">추천 수: <%= easypath.recommend_cnt %></p>
           <br>
           <hr>
           <p class="card-subtitle">Easypath 내용 :</p>
-          <p class="card-text">야 너도 디비 잘하고 싶어? 나두!!</p>
-          <div class="card" style="width: 70%;">
-            <div class="card-body">
-              <p class="card-subtitle">Easypath 0 : 노드에 디비 장착하기</p>
-              <p class="card-subtitle"><a href="https://opentutorials.org/course/3347/21185">URL 0: https://opentutorials.org/course/3347/21185</a></p>
-              <p class="card-subtitle">내용 0 : 이것은 노드로부터 비롯되어.... 쏼라릴아올쏼라라앙ㄹ울ㅇ루알물ㅇㄴ머라ㅣㅁㄴ어ㅣㄹ먼이ㅓ린ㅇ머린아멀</p>
+          <p class="card-text"><%= easypath.easypath_content %></p>
+          <% specific.forEach(e => { %>
+            <div class="card" style="width: 70%;">
+              <div class="card-body">
+                <p class="card-subtitle">Title : <%= e.specific_title %> </p>
+                <p class="card-subtitle"><a href="<%= e.specific_url %>">URL: <%= e.specific_url %></a></p>
+                <p class="card-subtitle">Contents : <%= e.specific_content %></p>
+              </div>
             </div>
-          </div>
-          <br>
-          <div class="card" style="width: 70%;">
-            <div class="card-body">
-              <p class="card-subtitle">Easypath 1 : 울라울라울라숑숑</p>
-              <p class="card-subtitle"><a href="https://opentutorials.org/course/3347/21186">URL 1: https://opentutorials.org/course/3347/21186</a></p>
-              <p class="card-subtitle">내용 0 : 짱구는 귀요미 탱구도 귀요미 탱구님 사랑해요 꺄아아아악</p>
-            </div>
-          </div>
             <br>
-            <br />
+          <% }); %>
+            <br>
             <center>
-              <button type="button" onClick="location.href='/study/new'" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
+              <% if (session.loggedin) { %>
+                <form action="/study/new" method="POST">
+                  <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                  <button type="submit" class="btn btn-primary">이 Easypath로 새 스터디 만들기!</button>
+                </form>
+                <% if (reco_chk) { %>
+                  <form action="/easypath/recommend" method="POST">
+                    <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                    <button type="submit" class="btn btn-primary">이 Easypath 추천하기!</button>
+                  </form>
+                <% } else { %>
+                  <form action="/easypath/delete/recommend" method="POST">
+                    <input type="hidden" name="easypath_id" value="<%= easypath.easypath_id %>" />
+                    <button type="submit" class="btn btn-secondary">이 Easypath 추천 해제하기!</button>
+                  </form>
+                <% } %>
+              <% } %>
             </center>
           </form>
         </div>
