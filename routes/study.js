@@ -410,7 +410,7 @@ router.get('/posts/search', (req, res, next) => {
   	var sql = `SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO
 	WHERE study_title LIKE '%${searchWord}%'
 	UNION SELECT * FROM REALLY_FINAL_DB.TBL_STUDY_INFO
-	WHERE study_title LIKE '%${searchWord}%';`
+	WHERE study_content LIKE '%${searchWord}%';`
 	console.log(sql)
 
   }

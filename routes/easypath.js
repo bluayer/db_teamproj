@@ -162,7 +162,7 @@ router.post('/create', (req, res, next) => {
 
 
 //localhost:3000/easypath/posts/search?searchCategory=author&searchWord=a 이러한 url이 들어오면 처리
-router.post ('/posts/search', (req, res, next) => {
+router.get ('/posts/search', (req, res, next) => {
 
   const { session } = req; //이거 무조건 넣어주셈 로그인 세션관련인데 이거안넣어주면 res.render에서 session define 안댔다구 오류남!
 
